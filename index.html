@@ -143,6 +143,11 @@
             display: block;
         }
 
+	.stat-danger {
+            color: #DAA520 !important;
+            animation: pulse 1s infinite;
+        }
+
         .stat-critical {
             color: #dc3545 !important;
             animation: pulse 1s infinite;
@@ -589,34 +594,6 @@ const scenarios = [
 ];
         // Failure scenarios
 const failureScenarios = {
-  militaryCoup: {
-    title: "Military Coup",
-    trigger: { military: 30, institutions: 30 },
-    text: "General Martinez appears on television announcing that the military is 'temporarily' taking control to restore order. Your limousine is surrounded by tanks.",
-    ending: "The military dissolves parliament and suspends the constitution. You are placed under house arrest 'for your own protection.' Democracy in Civitas ends not with violence, but with the quiet efficiency of authoritarianism.",
-    legacy: "You are remembered as the last democratically elected leader of Civitas, ultimately judged a failure who lost control of the state and handed power to the generals without a fight."
-  },
-  civilWar: {
-    title: "Civil War Erupts",
-    trigger: { social: 20, trust: 20 },
-    text: "Regional militias declare independence from the central government. The army splits its loyalty. Civitas fractures into warring territories.",
-    ending: "Years of conflict devastate the nation. When peace finally comes, Civitas has split into three separate countries, none of them democratic.",
-    legacy: "Your name is etched in history as the leader whose inability to maintain unity or trust led to a devastating civil war that erased the nation you once governed."
-  },
-  economicCollapse: {
-    title: "Collapse of the Middle Class",
-    trigger: { economy: 20, trust: 30 },
-    text: "A deep recession wipes out savings and small businesses. The middle class shrinks as economic mobility vanishes.",
-    ending: "A polarized electorate swings between extremes. Moderate parties vanish. The political system fragments, making stable governance impossible. Emergency executive powers become permanent under the guise of 'stability.'",
-    legacy: "You are seen as the architect of economic ruin, whose inaction during the crisis destroyed the middle class and opened the door for authoritarian populism."
-  },
-  popularUprising: {
-    title: "Popular Revolution",
-    trigger: { trust: 30, social: 20 },
-    text: "Millions fill the streets demanding your immediate resignation. The military refuses to disperse the crowds. Your own cabinet abandons you.",
-    ending: "You resign in disgrace and flee the country. A provisional government takes power but struggles with legitimacy, leading to years of political instability.",
-    legacy: "You are remembered as a despised and discredited ruler whose downfall sparked chaos. Your name becomes a byword for betrayal and failed leadership."
-  },
   corruptionParalysis: {
     title: "Corruption Gridlocks Government",
     trigger: { institutions: 14 },
@@ -651,6 +628,34 @@ const failureScenarios = {
     text: "Junior officers circulate manifestos criticizing 'politicized generals' and a 'dysfunctional civilian government.' Retired colonels openly call for 'restoration of national values.'",
     ending: "While no tanks roll in the streets, the military begins vetoing civilian decisions informally. Civilian control fades. Democracy is gradually hollowed out under an unofficial military–civilian alliance.",
     legacy: "You are remembered as the civilian leader who ceded control to the military out of fear and weakness, effectively ending democratic oversight and setting a dangerous precedent for future regimes."
+  },
+  militaryCoup: {
+    title: "Military Coup",
+    trigger: { military: 30, institutions: 30 },
+    text: "General Martinez appears on television announcing that the military is 'temporarily' taking control to restore order. Your limousine is surrounded by tanks.",
+    ending: "The military dissolves parliament and suspends the constitution. You are placed under house arrest 'for your own protection.' Democracy in Civitas ends not with violence, but with the quiet efficiency of authoritarianism.",
+    legacy: "You are remembered as the last democratically elected leader of Civitas, ultimately judged a failure who lost control of the state and handed power to the generals without a fight."
+  },
+  civilWar: {
+    title: "Civil War Erupts",
+    trigger: { social: 20, trust: 20 },
+    text: "Regional militias declare independence from the central government. The army splits its loyalty. Civitas fractures into warring territories.",
+    ending: "Years of conflict devastate the nation. When peace finally comes, Civitas has split into three separate countries, none of them democratic.",
+    legacy: "Your name is etched in history as the leader whose inability to maintain unity or trust led to a devastating civil war that erased the nation you once governed."
+  },
+  economicCollapse: {
+    title: "Collapse of the Middle Class",
+    trigger: { economy: 20, trust: 30 },
+    text: "A deep recession wipes out savings and small businesses. The middle class shrinks as economic mobility vanishes.",
+    ending: "A polarized electorate swings between extremes. Moderate parties vanish. The political system fragments, making stable governance impossible. Emergency executive powers become permanent under the guise of 'stability.'",
+    legacy: "You are seen as the architect of economic ruin, whose inaction during the crisis destroyed the middle class and opened the door for authoritarian populism."
+  },
+  popularUprising: {
+    title: "Popular Revolution",
+    trigger: { trust: 30, social: 20 },
+    text: "Millions fill the streets demanding your immediate resignation. The military refuses to disperse the crowds. Your own cabinet abandons you.",
+    ending: "You resign in disgrace and flee the country. A provisional government takes power but struggles with legitimacy, leading to years of political instability.",
+    legacy: "You are remembered as a despised and discredited ruler whose downfall sparked chaos. Your name becomes a byword for betrayal and failed leadership."
   }
 };
 
@@ -667,10 +672,15 @@ const failureScenarios = {
             const stats = ['trust', 'economy', 'social', 'institutions', 'military'];
             stats.forEach(stat => {
                 const element = document.getElementById(stat);
-                if (gameState[stat] <= 20) {
+                if (gameState[stat] <= 15) {
                     element.classList.add('stat-critical');
                 } else {
                     element.classList.remove('stat-critical');
+                }
+		if (gameState[stat] <= 40) {
+                    element.classList.add('stat-danger');
+                } else {
+                    element.classList.remove('stat-danger');
                 }
             });
 
@@ -708,23 +718,14 @@ const failureScenarios = {
                     <h4>Democratic Failure:</h4>
                     <p>${failure.ending}</p>
                 </div>
-		<h4>Your Legacy:</h4>
-                <p>${failure.legacy}</p>
+                <div class="stats">
+                    <div class="stat-item">
+			<h4>Your Legacy:</h4>
+                        <p>${failure.legacy}</p>
+                    </div>
+                </div>
                 <p style="text-align: center; margin-top: 20px;"><strong>Democracy is fragile. Your choices led to its collapse in Civitas.</strong></p>
             `;
-        }
-
-        function getRandomScenario(possibleNext) {
-            // Filter out scenarios already seen to avoid repetition
-            const unseenScenarios = possibleNext.filter(id => 
-                !gameState.scenariosSeen.includes(id) && scenarios.find(s => s.id === id)
-            );
-            
-            // If all scenarios have been seen, allow repetition
-            const availableScenarios = unseenScenarios.length > 0 ? unseenScenarios : possibleNext;
-            
-            const randomIndex = Math.floor(Math.random() * availableScenarios.length);
-            return availableScenarios[randomIndex];
         }
 
         function showScenario(scenarioId) {
@@ -851,7 +852,7 @@ const failureScenarios = {
                     <p>${choice.consequences}</p>
                 </div>
                 <button class="choice-btn" onclick="continueGame(${JSON.stringify(choice.next).replace(/"/g, '&quot;')})">
-                    Continue to Next Challenge
+                    Continue...
                 </button>
             `;
 
@@ -864,7 +865,7 @@ const failureScenarios = {
                 return;
             }
 
-            const nextScenario = getRandomScenario(possibleNext);
+            const nextScenario = possibleNext[0];
             setTimeout(() => showScenario(nextScenario), 1000);
         }
 
