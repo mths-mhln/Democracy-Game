@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Democracy Interactive Story</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: 1.1em;
+        }
+
+        .story-section {
+            margin-bottom: 25px;
+            line-height: 1.6;
+            color: #34495e;
+        }
+
+        .scenario {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .choice-container {
+            margin: 20px 0;
+        }
+
+        .choice-btn {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .advisor-btn {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            margin-bottom: 15px;
+        }
+
+        .advisor-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .consequence {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #856404;
+        }
+
+        .advisor-box {
+            background: #fef9e7;
+            border: 2px solid #f39c12;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            color: #856404;
+        }
+
+        .advisor-box h4 {
+            color: #d68910;
+            margin-bottom: 10px;
+        }
+
+        .stats {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .stat-item {
+            text-align: center;
+            color: #155724;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-critical {
+            color: #dc3545 !important;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .year-counter {
+            text-align: center;
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .restart-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .crisis-alert {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .success-alert {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .warning-alert {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .urgent-scenario {
+            border-left: 4px solid #e74c3c;
+            background: linear-gradient(135deg, #fadbd8 0%, #f8d7da 100%);
+        }
+
+        .routine-scenario {
+            border-left: 4px solid #28a745;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>The Republic of Civitas</h1>
+            <p class="subtitle">An Interactive Democracy Simulation</p>
+        </div>
+
+        <div id="gameContent">
+            <div class="story-section">
+                <p>Welcome to the Republic of Civitas, a newly formed nation of 10 million citizens. You have been elected as the founding Prime Minister with a mandate to establish democratic institutions and govern effectively.</p>
+                
+                <p>Your decisions will shape the future of democracy in Civitas. Each choice has consequences that affect public trust, economic stability, social cohesion, and institutional strength. <strong>Be warned:</strong> Poor leadership can lead to coups, civil unrest, or democratic collapse.</p>
+            </div>
+
+            <div class="year-counter" id="yearCounter">Year 1 of your Administration</div>
+
+            <div class="stats" id="stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="trust">75</span>
+                    <span>Public Trust</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="economy">70</span>
+                    <span>Economy</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="social">80</span>
+                    <span>Social Cohesion</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="institutions">65</span>
+                    <span>Institutions</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="military">60</span>
+                    <span>Military Loyalty</span>
+                </div>
+            </div>
+
+            <div id="scenario-content">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </div>
+
+        <button class="restart-btn" onclick="restartGame()">Restart Simulation</button>
+    </div>
+
+    <script>
+        // Game state
+        let gameState = {
+            trust: 75,
+            economy: 70,
+            social: 80,
+            institutions: 65,
+            military: 60,
+            currentScenario: 0,
+            year: 1,
+            advisorUses: 3,
+            decisions: [],
+            scenariosSeen: [],
+            specialEvents: {
+                corruptionScandalTriggered: false,
+                economicCrisisTriggered: false,
+                militaryUnrestTriggered: false
+            }
+        };
+
+        // Define scenarios array FIRST
+const scenarios = [
+    {
+        id: 0,
+        title: "The Constitutional Convention",
+        text: "Your first major decision involves designing the electoral system. The choice you make will fundamentally shape how democracy functions in Civitas.",
+        type: "routine",
+        year: 1,
+        advisorAvailable: true,
+        advisorText: "The electoral system is crucial for legitimacy. First-past-the-post creates stable governments but can exclude minorities. Proportional representation includes more voices but may create unstable coalitions. Mixed systems are complex but can balance both needs.",
+        choices: [
+            {
+                text: "A) First-Past-The-Post system (winner takes all in each district)",
+                consequences: "The system produces clear majorities but leaves 45% of voters feeling unrepresented. Regional separatist movements gain momentum.",
+                effects: { trust: -8, economy: +10, social: -12, institutions: +8 },
+                next: [1]
+            },
+            {
+                text: "B) Proportional Representation (seats allocated by vote percentage)",
+                consequences: "Every voice is heard, but coalition negotiations take 8 months. Government struggles to pass urgent legislation.",
+                effects: { trust: +12, economy: -8, social: +10, institutions: -6 },
+                next: [1]
+            },
+            {
+                text: "C) Mixed system combining both approaches",
+                consequences: "A complex compromise that requires extensive voter education. First election has 15% invalid ballots due to confusion.",
+                effects: { trust: -3, economy: -3, social: +3, institutions: +3 },
+                next: [1]
+            }
+        ]
+    },
+    {
+        id: 1,
+        title: "The Corruption Scandal",
+        text: "Six months later, your deputy is caught taking bribes from construction companies. Media is in a frenzy and opposition demands your resignation for 'failing to maintain standards'.",
+        type: "routine",
+        year: 1,
+        advisorAvailable: true,
+        advisorText: "Corruption scandals can destroy governments overnight. Swift, decisive action shows strength and integrity. Defending the indefensible will only deepen the crisis. Half-measures often make you look both weak and complicit. The key is getting ahead of the story.",
+        choices: [
+            {
+                text: "A) Immediately fire the deputy and launch independent investigation",
+                consequences: "Your swift action is praised internationally, but the investigation exposes widespread party financing irregularities that embarrass your government.",
+                effects: { trust: +15, economy: -5, social: +8, institutions: +12 },
+                next: [2]
+            },
+            {
+                text: "B) Defend your deputy and claim political persecution",
+                consequences: "Party loyalty is maintained but more evidence emerges daily. Three major newspapers call for your impeachment and protests grow larger.",
+                effects: { trust: -20, economy: +3, social: -15, institutions: -12 },
+                next: [2]
+            },
+            {
+                text: "C) Quietly transfer deputy to different role while promising reforms",
+                consequences: "The scandal drags on for months. Public sees you as weak and indecisive. Opposition gains 15 points in polls.",
+                effects: { trust: -12, economy: -3, social: -8, institutions: -10 },
+                next: [2]
+            }
+        ]
+    },
+    {
+        id: 2,
+        title: "Economic Crisis Strikes",
+        text: "Global recession hits Civitas hard. Unemployment jumps to 18%, banks are failing, and daily protests shut down the capital. Your economic team presents three emergency options:",
+        type: "crisis",
+        year: 2,
+        advisorAvailable: false,
+        advisorText: "Economic crises test every leader. Austerity works long-term but causes immediate pain that can topple governments. Stimulus provides quick relief but risks fiscal collapse. The middle path often means prolonged suffering but preserves options. Consider what you can politically survive.",
+        choices: [
+            {
+                text: "A) Massive austerity: cut spending by 40% and raise taxes",
+                consequences: "Budget is balanced within two years but unemployment hits 25%. Healthcare and education systems collapse. Mass emigration begins.",
+                effects: { trust: -18, economy: +20, social: -25, institutions: +8 },
+                next: [3]
+            },
+            {
+                text: "B) Enormous stimulus: spend 200% more than budget allows",
+                consequences: "Unemployment drops to 8% and protests end, but national debt triples. International creditors threaten to cut off all loans.",
+                effects: { trust: +12, economy: -15, social: +20, institutions: -10 },
+                next: [3]
+            },
+            {
+                text: "C) Moderate approach: some cuts, some stimulus, borrow carefully",
+                consequences: "Crisis drags on for 3 years. Unemployment stays at 15%. Public grows frustrated with slow recovery and blames your 'weak leadership'.",
+                effects: { trust: -8, economy: +8, social: -10, institutions: +5 },
+                next: [3]
+            }
+        ]
+    },
+    {
+        id: 3,
+        title: "The Refugee Crisis",
+        text: "War in neighboring Valeria sends 200,000 refugees to your borders. Public opinion is split 60-40 against accepting them. EU threatens sanctions if you refuse entry.",
+        type: "routine",
+        year: 2,
+        advisorAvailable: true,
+        advisorText: "Refugee crises create impossible choices between moral duty and political survival. Open borders may be morally right but can fuel extremism. Closed borders preserve stability but damage international standing. Public opinion can shift rapidly based on events - a terror attack or heartbreaking photo can change everything.",
+        choices: [
+            {
+                text: "A) Open borders: accept all refugees with full integration support",
+                consequences: "International praise but domestic backlash is severe. Anti-immigrant riots break out in 5 cities. Far-right party surges to 25% in polls.",
+                effects: { trust: -15, economy: -12, social: -20, institutions: +10 },
+                next: [4]
+            },
+            {
+                text: "B) Sealed borders: accept only 5,000 through official UN process",
+                consequences: "EU imposes trade sanctions costing billions. International isolation damages your reputation but domestic approval rises to 65%.",
+                effects: { trust: +8, economy: -10, social: +12, institutions: -12 },
+                next: [4]
+            },
+            {
+                text: "C) Controlled entry: accept 50,000 with EU burden-sharing agreement",
+                consequences: "Compromise satisfies no one. Pro-refugee groups call you heartless while anti-immigrant voters call you weak. Prolonged negotiations anger EU partners.",
+                effects: { trust: -5, economy: -6, social: -5, institutions: -6 },
+                next: [4]
+            }
+        ]
+    },
+    {
+        id: 4,
+        title: "The Disinformation War",
+        text: "Foreign trolls and domestic extremists flood social media with fake news about government policies. 40% of citizens believe false claims that you're planning to ban private property.",
+        type: "routine",
+        year: 3,
+        advisorAvailable: true,
+        advisorText: "Disinformation is democracy's new battleground. Government censorship, even of lies, sets dangerous precedents that future leaders may abuse. But unchecked lies can destroy public trust in everything. Tech companies respond only to pressure, not requests. Education takes years while crises need immediate solutions.",
+        choices: [
+            {
+                text: "A) Create government ministry to monitor and remove 'fake news'",
+                consequences: "Disinformation decreases but you're labeled authoritarian. Press freedom groups launch international campaign against you. Democratic allies distance themselves.",
+                effects: { trust: -12, economy: -6, social: +10, institutions: -18 },
+                next: [5]
+            },
+            {
+                text: "B) Pressure tech companies to self-regulate but take no government action",
+                consequences: "Tech companies do minimal action. Fake news spreads faster, causing mass panic. Bank runs occur after false rumors about economic collapse.",
+                effects: { trust: -15, economy: -12, social: -15, institutions: +6 },
+                next: [5]
+            },
+            {
+                text: "C) Launch massive public education campaign about media literacy",
+                consequences: "Long-term solution but immediate crisis worsens. Opposition exploits confusion to spread more false claims about your 'weakness' against foreign interference.",
+                effects: { trust: +5, economy: -3, social: -8, institutions: +12 },
+                next: [5]
+            }
+        ]
+    },
+    {
+        id: 5,
+        title: "The General Strike",
+        text: "All major unions coordinate a national strike demanding 40% wage increases and 4-day work weeks. Economy grinds to halt: no transport, electricity, or hospitals functioning.",
+        type: "routine",
+        year: 3,
+        advisorAvailable: true,
+        advisorText: "General strikes can paralyze nations and topple governments. Meeting all demands may end the strike but could bankrupt the economy. Military intervention preserves order but destroys democratic legitimacy. Negotiation shows reasonableness but lets the crisis drag on, damaging your authority.",
+        choices: [
+            {
+                text: "A) Meet all union demands immediately",
+                consequences: "Strike ends but businesses flee the country en masse. Unemployment surges as companies can't afford the new wage costs. Economy contracts 25%.",
+                effects: { trust: +8, economy: -25, social: +15, institutions: -8 },
+                next: [6]
+            },
+            {
+                text: "B) Declare emergency and use military to break the strikes",
+                consequences: "Economy resumes but violent clashes result in 12 deaths. International condemnation is fierce. You're banned from EU meetings and NATO threatens expulsion.",
+                effects: { trust: -22, economy: +8, social: -25, institutions: -20 },
+                next: [6]
+            },
+            {
+                text: "C) Negotiate for weeks while country suffers",
+                consequences: "Final deal gives unions 15% raises but crisis lasts 2 months. GDP drops 8%. Public blames your government for both the initial strike and weak leadership.",
+                effects: { trust: -10, economy: -10, social: -12, institutions: -5 },
+                next: [6]
+            }
+        ]
+    },
+    {
+        id: 6,
+        title: "The Military Coup Attempt",
+        text: "Hardline generals, angry about defense budget cuts, attempt a midnight coup. They control key military bases but most units remain loyal. You have 6 hours to respond.",
+        type: "crisis",
+        year: 3,
+        advisorAvailable: false,
+        advisorText: "Coups succeed when leaders appear weak or isolated. Negotiating with coup plotters legitimizes their actions and invites future attempts. Force risks bloodshed but shows strength. Popular mobilization can be powerful but unpredictable. Whatever you choose, act decisively - hesitation invites disaster.",
+        choices: [
+            {
+                text: "A) Negotiate with coup leaders and offer compromise on defense spending",
+                consequences: "Coup ends peacefully but you look weak. Military gains effective veto power over government policy. Democratic allies question your commitment to civilian rule.",
+                effects: { trust: -15, economy: +5, social: -10, institutions: -25 },
+                next: [7]
+            },
+            {
+                text: "B) Order loyal forces to arrest all coup leaders immediately",
+                consequences: "Brief fighting kills 45 people but democracy is preserved. International support pours in but domestic military remains resentful and unreliable.",
+                effects: { trust: +15, economy: -8, social: -12, institutions: +20 },
+                next: [7]
+            },
+            {
+                text: "C) Appeal directly to public via emergency broadcast",
+                consequences: "Massive civilian protests force coup leaders to surrender, but crisis reveals deep military dissatisfaction. Three more coup attempts occur over the next year.",
+                effects: { trust: +12, economy: -10, social: +8, institutions: -10 },
+                next: [7]
+            }
+        ]
+    },
+    {
+        id: 7,
+        title: "The Climate Emergency",
+        text: "Unprecedented floods devastate 30% of the country. Scientists say immediate action needed to prevent worse disasters. Business lobby warns environmental regulations will destroy the economy.",
+        type: "routine",
+        year: 4,
+        advisorAvailable: true,
+        advisorText: "Climate policy creates a cruel paradox: act too fast and crash the economy, act too slowly and face environmental catastrophe. Radical transitions cause massive unemployment but may prevent worse disasters. Business-friendly approaches maintain jobs but risk future crises. Moderate approaches often satisfy no one.",
+        choices: [
+            {
+                text: "A) Implement radical green transition: ban fossil fuels within 2 years",
+                consequences: "Environmental groups celebrate but economic chaos follows. Energy costs triple, major industries collapse, unemployment hits 30%. Rolling blackouts become daily reality.",
+                effects: { trust: -12, economy: -25, social: -15, institutions: +8 },
+                next: [8]
+            },
+            {
+                text: "B) Prioritize economic recovery over environmental action",
+                consequences: "Business confidence returns but another massive flood hits during election year. Opposition blames your 'climate denial' for the disaster. International climate funding cut off.",
+                effects: { trust: -18, economy: +12, social: -18, institutions: -10 },
+                next: [8]
+            },
+            {
+                text: "C) Gradual 10-year transition plan with business partnerships",
+                consequences: "Moderate approach satisfies neither environmentalists nor business. Another climate disaster occurs, but economic disruption is minimized. Progress is slow but steady.",
+                effects: { trust: -8, economy: -3, social: -8, institutions: +5 },
+                next: [8]
+            }
+        ]
+    },
+    {
+        id: 8,
+        title: "The Separatist Movement",
+        text: "The northern region, feeling neglected after the economic crisis, declares independence. They control 25% of the country's territory and GDP. International law is unclear on recognition.",
+        type: "routine",
+        year: 4,
+        advisorAvailable: true,
+        advisorText: "Separatism tests the limits of democracy. Military force preserves territorial integrity but at terrible cost in lives and legitimacy. Negotiated independence shows democratic values but encourages other regions to secede. Autonomy deals can work but create precedents that weaken central authority.",
+        choices: [
+            {
+                text: "A) Use military force to prevent secession",
+                consequences: "Civil war lasts 8 months. Thousands die and infrastructure is destroyed. You win but northern region remains hostile. International war crimes tribunal investigates.",
+                effects: { trust: -20, economy: -18, social: -30, institutions: -15 },
+                next: [9]
+            },
+            {
+                text: "B) Negotiate independence referendum with international oversight",
+                consequences: "Northern region votes 67% for independence. You lose 25% of territory and economy but are praised for democratic handling. Brain drain accelerates as professionals leave.",
+                effects: { trust: +12, economy: -18, social: -10, institutions: +15 },
+                next: [9]
+            },
+            {
+                text: "C) Offer massive autonomy deal to keep them in the union",
+                consequences: "Deal barely passes (52% support). Northern region stays but gets special privileges that anger other regions. Constitutional crisis emerges as other regions demand equal treatment.",
+                effects: { trust: -10, economy: -8, social: -12, institutions: -12 },
+                next: [9]
+            }
+        ]
+    },
+    {
+        id: 9,
+        title: "The Final Campaign",
+        text: "Election day approaches. Your approval rating is mixed, and polls show a tight race. Opposition promises to undo all your policies. How do you make your final appeal to voters?",
+        type: "routine",
+        year: 4,
+        advisorAvailable: true,
+        advisorText: "Final campaigns reveal a leader's true character. Running on your record shows integrity but reminds voters of painful decisions. False promises may win elections but create impossible expectations. Divisive rhetoric energizes supporters but damages democratic norms forever. Choose what kind of leader you want to be remembered as.",
+        choices: [
+            {
+                text: "A) Run on your record: 'I made tough choices for Civitas's future'",
+                consequences: "Honest campaign resonates with some voters but reminds others of painful policies. You lose by 3% but maintain respect for democratic principles.",
+                effects: { trust: +15, economy: 0, social: +8, institutions: +20 },
+                next: ["election"]
+            },
+            {
+                text: "B) Promise popular policies you can't afford: 'Better times ahead!'",
+                consequences: "Poll numbers surge but victory is hollow. You win but set impossible expectations. Fiscal crisis hits within 6 months of new term starting.",
+                effects: { trust: -10, economy: -12, social: +12, institutions: -15 },
+                next: ["election"]
+            },
+            {
+                text: "C) Attack opponents with divisive rhetoric: 'They will destroy Civitas!'",
+                consequences: "Base is energized and you win by 1%, but social fabric tears apart. Post-election violence erupts. Democratic norms are permanently damaged.",
+                effects: { trust: -18, economy: -6, social: -25, institutions: -20 },
+                next: ["election"]
+            }
+        ]
+    }
+];
+        // Failure scenarios
+const failureScenarios = {
+  militaryCoup: {
+    title: "Military Coup",
+    trigger: { military: 30, institutions: 30 },
+    text: "General Martinez appears on television announcing that the military is 'temporarily' taking control to restore order. Your limousine is surrounded by tanks.",
+    ending: "The military dissolves parliament and suspends the constitution. You are placed under house arrest 'for your own protection.' Democracy in Civitas ends not with violence, but with the quiet efficiency of authoritarianism.",
+    legacy: "You are remembered as the last democratically elected leader of Civitas, ultimately judged a failure who lost control of the state and handed power to the generals without a fight."
+  },
+  civilWar: {
+    title: "Civil War Erupts",
+    trigger: { social: 20, trust: 20 },
+    text: "Regional militias declare independence from the central government. The army splits its loyalty. Civitas fractures into warring territories.",
+    ending: "Years of conflict devastate the nation. When peace finally comes, Civitas has split into three separate countries, none of them democratic.",
+    legacy: "Your name is etched in history as the leader whose inability to maintain unity or trust led to a devastating civil war that erased the nation you once governed."
+  },
+  economicCollapse: {
+    title: "Collapse of the Middle Class",
+    trigger: { economy: 20, trust: 30 },
+    text: "A deep recession wipes out savings and small businesses. The middle class shrinks as economic mobility vanishes.",
+    ending: "A polarized electorate swings between extremes. Moderate parties vanish. The political system fragments, making stable governance impossible. Emergency executive powers become permanent under the guise of 'stability.'",
+    legacy: "You are seen as the architect of economic ruin, whose inaction during the crisis destroyed the middle class and opened the door for authoritarian populism."
+  },
+  popularUprising: {
+    title: "Popular Revolution",
+    trigger: { trust: 30, social: 20 },
+    text: "Millions fill the streets demanding your immediate resignation. The military refuses to disperse the crowds. Your own cabinet abandons you.",
+    ending: "You resign in disgrace and flee the country. A provisional government takes power but struggles with legitimacy, leading to years of political instability.",
+    legacy: "You are remembered as a despised and discredited ruler whose downfall sparked chaos. Your name becomes a byword for betrayal and failed leadership."
+  },
+  corruptionParalysis: {
+    title: "Corruption Gridlocks Government",
+    trigger: { institutions: 14 },
+    text: "Whistleblowers reveal a vast network of bribery implicating top ministers, regulators, and judges. Parliamentary investigations stall amid procedural chaos.",
+    ending: "Public services slow to a crawl. Foreign investment dries up. A populist movement rises promising to 'clean house'—but instead concentrates power in the executive, permanently weakening institutional checks and balances.",
+    legacy: "Historians remember your administration as the one that enabled corruption to flourish unchecked, setting the stage for the collapse of institutional democracy and the rise of authoritarianism."
+  }, 
+  middleClassCollapse: {
+    title: "Economic Collapse",
+    trigger: { economy: 14 },
+    text: "Hyperinflation reaches 1000% annually. Citizens queue for bread while the currency becomes worthless. Mass protests demand your resignation.",
+    ending: "Emergency powers are declared but it's too late. The government falls and is replaced by a technocratic emergency administration that suspends elections indefinitely.",
+    legacy: "You are remembered as the leader who oversaw the death of economic hope, blamed for mismanagement and indecision that destroyed the middle class and ended democratic governance."
+  },
+  mediaFragmentation: {
+    title: "Total Media Fragmentation",
+    trigger: { trust: 14 },
+    text: "Every demographic consumes a different reality. Fact-checking institutions are defunded and discredited. Consensus on basic truths disappears.",
+    ending: "Policy becomes performative. Elections are seen as rigged by all sides. A constitutional crisis erupts when one side refuses to accept election results, leading to a slide into illiberal rule under the pretext of 'national unity.'",
+    legacy: "You are remembered as a passive observer during the collapse of public trust, blamed for allowing disinformation to overrun civic discourse and fatally undermine democratic norms."
+  },
+  urbanRuralBreakdown: {
+    title: "Urban-Rural Political Breakdown",
+    trigger: { social: 14 },
+    text: "Major cities pass local laws openly defying national policies. Rural provinces begin forming their own alliances. Mutual resentment festers.",
+    ending: "Legislative deadlock turns into de facto secessionism. The government responds with centralizing reforms that eliminate regional autonomy. Democracy persists in name, but real power becomes entirely top-down.",
+    legacy: "Your name becomes synonymous with national fragmentation. Future generations view you as the leader who drove a wedge between citizens, breaking the social contract that once held the nation together."
+  },
+  officerRevolt: {
+    title: "Officer Corps Revolts Politically",
+    trigger: { military: 14 },
+    text: "Junior officers circulate manifestos criticizing 'politicized generals' and a 'dysfunctional civilian government.' Retired colonels openly call for 'restoration of national values.'",
+    ending: "While no tanks roll in the streets, the military begins vetoing civilian decisions informally. Civilian control fades. Democracy is gradually hollowed out under an unofficial military–civilian alliance.",
+    legacy: "You are remembered as the civilian leader who ceded control to the military out of fear and weakness, effectively ending democratic oversight and setting a dangerous precedent for future regimes."
+  }
+};
+
+
+        // Main game functions
+        function updateStats() {
+            document.getElementById('trust').textContent = gameState.trust;
+            document.getElementById('economy').textContent = gameState.economy;
+            document.getElementById('social').textContent = gameState.social;
+            document.getElementById('institutions').textContent = gameState.institutions;
+            document.getElementById('military').textContent = gameState.military;
+
+            // Add visual warnings for critical stats
+            const stats = ['trust', 'economy', 'social', 'institutions', 'military'];
+            stats.forEach(stat => {
+                const element = document.getElementById(stat);
+                if (gameState[stat] <= 20) {
+                    element.classList.add('stat-critical');
+                } else {
+                    element.classList.remove('stat-critical');
+                }
+            });
+
+            document.getElementById('yearCounter').textContent = `Year ${gameState.year} of your Administration`;
+        }
+
+        function checkFailureConditions() {
+            for (let [failureType, failure] of Object.entries(failureScenarios)) {
+                let triggered = true;
+                for (let [stat, threshold] of Object.entries(failure.trigger)) {
+                    if (gameState[stat] > threshold) {
+                        triggered = false;
+                        break;
+                    }
+                }
+                if (triggered) {
+                    showFailureEnding(failure);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function showFailureEnding(failure) {
+            const content = document.getElementById('scenario-content');
+            content.innerHTML = `
+                <div class="crisis-alert">
+                    <h3>${failure.title}</h3>
+                </div>
+                <div class="scenario urgent-scenario">
+                    <p><strong>GAME OVER</strong></p>
+                    <p>${failure.text}</p>
+                </div>
+                <div class="consequence">
+                    <h4>Democratic Failure:</h4>
+                    <p>${failure.ending}</p>
+                </div>
+		<h4>Your Legacy:</h4>
+                <p>${failure.legacy}</p>
+                <p style="text-align: center; margin-top: 20px;"><strong>Democracy is fragile. Your choices led to its collapse in Civitas.</strong></p>
+            `;
+        }
+
+        function getRandomScenario(possibleNext) {
+            // Filter out scenarios already seen to avoid repetition
+            const unseenScenarios = possibleNext.filter(id => 
+                !gameState.scenariosSeen.includes(id) && scenarios.find(s => s.id === id)
+            );
+            
+            // If all scenarios have been seen, allow repetition
+            const availableScenarios = unseenScenarios.length > 0 ? unseenScenarios : possibleNext;
+            
+            const randomIndex = Math.floor(Math.random() * availableScenarios.length);
+            return availableScenarios[randomIndex];
+        }
+
+        function showScenario(scenarioId) {
+            // Check for failure conditions first
+            if (checkFailureConditions()) {
+                return;
+            }
+
+            if (scenarioId === "election") {
+                showElectionResults();
+                return;
+            }
+
+            const scenario = scenarios.find(s => s.id === scenarioId);
+            if (!scenario) {
+                console.error('Scenario not found:', scenarioId);
+                return;
+            }
+
+            gameState.currentScenario = scenarioId;
+            gameState.scenariosSeen.push(scenarioId);
+            
+            if (scenario.year > gameState.year) {
+                gameState.year = scenario.year;
+            }
+
+            const content = document.getElementById('scenario-content');
+            const scenarioClass = scenario.type === 'crisis' ? 'urgent-scenario' : 'routine-scenario';
+            
+            let advisorButton = '';
+            if (scenario.advisorAvailable && gameState.advisorUses > 0) {
+                advisorButton = `
+                    <button class="choice-btn advisor-btn" onclick="consultAdvisor(${scenarioId})">
+                        💡 Consult Political Advisor (${gameState.advisorUses} uses remaining)
+                    </button>
+                `;
+            } else if (scenario.advisorAvailable && gameState.advisorUses === 0) {
+                advisorButton = `
+                    <button class="choice-btn advisor-btn" disabled>
+                        💡 Political Advisor Unavailable (No uses remaining)
+                    </button>
+                `;
+            } else if (!scenario.advisorAvailable) {
+                advisorButton = `
+                    <div class="warning-alert">
+                        ⚠️ This crisis is too urgent for advisor consultation - you must decide immediately!
+                    </div>
+                `;
+            }
+
+            let choicesHTML = scenario.choices.map((choice, index) => 
+                `<button class="choice-btn" onclick="makeChoice(${scenarioId}, ${index})">${choice.text}</button>`
+            ).join('');
+
+            content.innerHTML = `
+                <div class="scenario ${scenarioClass}">
+                    <h3>${scenario.title}</h3>
+                    <p>${scenario.text}</p>
+                </div>
+                ${advisorButton}
+                <div class="choice-container">
+                    ${choicesHTML}
+                </div>
+            `;
+
+            updateStats();
+        }
+
+        function consultAdvisor(scenarioId) {
+            const scenario = scenarios.find(s => s.id === scenarioId);
+            if (!scenario || !scenario.advisorAvailable || gameState.advisorUses <= 0) return;
+
+            gameState.advisorUses--;
+            
+            const content = document.getElementById('scenario-content');
+            const advisorBox = `
+                <div class="advisor-box">
+                    <h4>🎓 Political Advisor's Analysis:</h4>
+                    <p>${scenario.advisorText}</p>
+                </div>
+            `;
+            
+            // Insert advisor box before choices
+            const choiceContainer = content.querySelector('.choice-container');
+            choiceContainer.insertAdjacentHTML('beforebegin', advisorBox);
+            
+            // Disable advisor button
+            const advisorBtn = content.querySelector('.advisor-btn');
+            if (advisorBtn) {
+                advisorBtn.disabled = true;
+                advisorBtn.textContent = `💡 Advisor Consulted (${gameState.advisorUses} uses remaining)`;
+            }
+        }
+
+        function makeChoice(scenarioId, choiceIndex) {
+            const scenario = scenarios.find(s => s.id === scenarioId);
+            if (!scenario) return;
+
+            const choice = scenario.choices[choiceIndex];
+            
+            // Apply effects to game state
+            for (let [stat, change] of Object.entries(choice.effects)) {
+                gameState[stat] = Math.max(0, Math.min(100, gameState[stat] + change));
+            }
+
+            // Record decision
+            gameState.decisions.push({
+                scenario: scenario.title,
+                choice: choice.text,
+                year: gameState.year
+            });
+
+            // Show consequences
+            const content = document.getElementById('scenario-content');
+            content.innerHTML = `
+                <div class="scenario ${scenario.type === 'crisis' ? 'urgent-scenario' : 'routine-scenario'}">
+                    <h3>${scenario.title}</h3>
+                    <p>${scenario.text}</p>
+                </div>
+                <div class="consequence">
+                    <h4>Your Choice:</h4>
+                    <p>${choice.text}</p>
+                    <h4>Consequences:</h4>
+                    <p>${choice.consequences}</p>
+                </div>
+                <button class="choice-btn" onclick="continueGame(${JSON.stringify(choice.next).replace(/"/g, '&quot;')})">
+                    Continue to Next Challenge
+                </button>
+            `;
+
+            updateStats();
+        }
+
+        function continueGame(possibleNext) {
+            // Check for failure conditions after each decision
+            if (checkFailureConditions()) {
+                return;
+            }
+
+            const nextScenario = getRandomScenario(possibleNext);
+            setTimeout(() => showScenario(nextScenario), 1000);
+        }
+
+        function showElectionResults() {
+            const totalScore = gameState.trust + gameState.economy + gameState.social + gameState.institutions + gameState.military;
+            let result, description, legacy;
+
+            if (totalScore >= 400) {
+                result = "OVERWHELMING VICTORY";
+                description = "You win re-election with 78% of the vote!";
+                legacy = "You are hailed as one of the greatest democratic leaders in history. Civitas has become a model democracy that other nations study and emulate.";
+            } else if (totalScore >= 350) {
+                result = "CLEAR VICTORY";
+                description = "You win re-election with 62% of the vote.";
+                legacy = "Your leadership has strengthened Civitas's democratic institutions. While challenges remain, the country is on a positive trajectory.";
+            } else if (totalScore >= 300) {
+                result = "NARROW VICTORY";
+                description = "You win re-election with 51% of the vote.";
+                legacy = "A close election reflects a divided nation. Your second term will require building broader consensus and healing social divisions.";
+            } else if (totalScore >= 250) {
+                result = "NARROW DEFEAT";
+                description = "You lose re-election with 47% of the vote.";
+                legacy = "Despite the electoral loss, you leave office peacefully, demonstrating democratic norms. Your successor faces significant challenges you were unable to resolve.";
+            } else {
+                result = "DECISIVE DEFEAT";
+                description = "You lose re-election with only 38% of the vote.";
+                legacy = "Your time in office will be remembered as a period of missed opportunities and policy failures. However, the peaceful transition of power shows democracy's resilience.";
+            }
+
+            const content = document.getElementById('scenario-content');
+            content.innerHTML = `
+                <div class="success-alert">
+                    <h3>Election Results: ${result}</h3>
+                </div>
+                <div class="scenario routine-scenario">
+                    <p><strong>${description}</strong></p>
+                    <p>${legacy}</p>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-value">Total Score: ${totalScore}/500</span>
+                    </div>
+                </div>
+ 		<div class="story-section">
+			<h4>Key Lessons Learned:</h4>
+                    	<p><strong>1. Trade-offs are Inevitable:</strong> Every democratic decision involves balancing competing values and interests.</p>
+                    	<p><strong>2. Trust is Fragile:</strong> Public trust takes time to build but can be quickly lost through poor decisions or perceived corruption.</p>
+                    	<p><strong>3. Institutions Matter:</strong> Strong democratic institutions provide stability but require constant maintenance and respect.</p>
+                    	<p><strong>4. Social Cohesion is Essential:</strong> Democracy requires a shared commitment to democratic values, even when people disagree on policies.</p>
+                    	<p><strong>5. Information and Education:</strong> Democratic citizenship requires informed participation and media literacy.</p>
+                </div>
+                <h4>Discussion Questions:</h4>
+                	<ul style="margin-left: 20px; line-height: 1.8;">
+                    	<li>Which of your decisions had the most unexpected consequences?</li>
+                    	<li>How did you balance competing democratic values like freedom vs. security?</li>
+                    	<li>What does this simulation reveal about the challenges of democratic governance?</li>
+                    	<li>How might different electoral systems have changed your decision-making?</li>
+                    	<li>What role did public opinion play in your choices?</li>
+                </ul>
+		<p style="text-align: center; margin-top: 20px;"><strong>Thank you for playing! Democracy requires constant vigilance and difficult choices.</strong></p>
+            `;
+        }
+
+        function restartGame() {
+            gameState = {
+                trust: 75,
+                economy: 70,
+                social: 80,
+                institutions: 65,
+                military: 60,
+                currentScenario: 0,
+                year: 1,
+                advisorUses: 3,
+                decisions: [],
+                scenariosSeen: [],
+                specialEvents: {
+                    corruptionScandalTriggered: false,
+                    economicCrisisTriggered: false,
+                    militaryUnrestTriggered: false
+                }
+            };
+            showScenario(0);
+            updateStats();
+        }
+
+        // Initialize the game
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+            setTimeout(() => showScenario(0), 100);
+        });
+    </script>
+</body>
+</html>
