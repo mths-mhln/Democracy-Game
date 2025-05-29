@@ -1043,7 +1043,13 @@ militaryAdministration: {
             const nextScenario = possibleNext[0];
             setTimeout(() => showScenario(nextScenario), 1000);
         }
-        function showElectionResults() {
+	function formatList(items) {
+    if (items.length === 0) return '';
+    if (items.length === 1) return items[0];
+    if (items.length === 2) return items.join(' and ');
+    return items.slice(0, -1).join(', ') + ', and ' + items[items.length - 1];
+}
+	function showElectionResults() {
             const totalScore = gameState.trust + gameState.economy + gameState.social + gameState.institutions + gameState.military;
             const scores = {
                 trust: gameState.trust,
@@ -1075,11 +1081,25 @@ militaryAdministration: {
                 baseLegacy = "You are hailed as one of the greatest democratic leaders in history. Civitas has become a model democracy that other nations study and emulate.";
                 resultColor = "#155724";
             } else if (totalScore >= 350) {
-                result = "CLEAR VICTORY";
-                description = "You win re-election with 62% of the vote.";
-                baseLegacy = "Your leadership has strengthened Civitas's democratic institutions and the country is on a positive trajectory.";
-                resultColor = "#155724";
-            } else if (totalScore >= 300) {
+    result = "CLEAR VICTORY";
+    description = "You win re-election with 62% of the vote.";
+    
+    // Check for significant weaknesses even in victory
+    const significantWeaknesses = [];
+    Object.entries(scores).forEach(([key, value]) => {
+        if (value < 50) { // Lower threshold for "concerning" in a victory context
+            significantWeaknesses.push(scoreNames[key]);
+        }
+    });
+    
+    if (significantWeaknesses.length > 0) {
+        baseLegacy = `Your leadership has strengthened Civitas's democratic institutions overall, though voters remain concerned about ${formatList(significantWeaknesses)}. Your decisive victory gives you a strong mandate to address these remaining challenges.`;
+    } else {
+        baseLegacy = "Your leadership has strengthened Civitas's democratic institutions and the country is on a positive trajectory.";
+    }
+    
+    resultColor = "#155724";
+}else if (totalScore >= 300) {
                 result = "NARROW VICTORY";
                 description = "You win re-election with 51% of the vote.";
                 baseLegacy = "A close election reflects a divided nation. Your second term will require building broader consensus and addressing unresolved challenges.";
@@ -1097,12 +1117,12 @@ militaryAdministration: {
             }
             let fullLegacy = baseLegacy;
             if (strengths.length > 0 && weaknesses.length > 0) {
-                fullLegacy += ` While you excelled in ${strengths.join(' and ')}, significant challenges remain in ${weaknesses.join(' and ')}.`;
-            } else if (weaknesses.length > 0) {
-                fullLegacy += ` However, your administration struggled with ${weaknesses.join(' and ')}, leaving these as priority areas for your successor.`;
-            } else if (strengths.length > 0 && totalScore < 400) {
-                fullLegacy += ` Your particular strengths in ${strengths.join(' and ')} will be remembered as defining achievements of your tenure.`;
-            }
+    fullLegacy += ` While you excelled in ${formatList(strengths)}, significant challenges remain in ${formatList(weaknesses)}.`;
+} else if (weaknesses.length > 0) {
+    fullLegacy += ` However, your administration struggled with ${formatList(weaknesses)}, leaving these as priority areas for your successor.`;
+} else if (strengths.length > 0 && totalScore < 400) {
+    fullLegacy += ` Your particular strengths in ${formatList(strengths)} will be remembered as defining achievements of your tenure.`;
+}
             if (scores.economy < 40 && scores.military < 40) {
                 fullLegacy += " The combination of economic instability and military concerns created a volatile security environment that dominated your final years in office.";
             } else if (scores.economy < 40) {
