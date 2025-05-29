@@ -101,9 +101,10 @@
             box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
         }
 
-        .advisor-btn {
+                .advisor-btn {
             background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
             margin-bottom: 15px;
+            transition: all 0.3s ease;
         }
 
         .advisor-btn:disabled {
@@ -111,6 +112,13 @@
             cursor: not-allowed;
             transform: none;
         }
+
+        .advisor-btn.expanded {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            margin-bottom: 0;
+        }
+
 
         .consequence {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -135,16 +143,60 @@
         .advisor-box {
             background: #fef9e7;
             border: 2px solid #f39c12;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 15px 0;
+            border-top: none;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            padding: 0 20px;
+            margin: 0 0 15px 0;
             color: #856404;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .advisor-box.expanded {
+            max-height: 300px;
+            opacity: 1;
+            padding: 20px;
         }
 
         .advisor-box h4 {
             color: #d68910;
             margin-bottom: 10px;
         }
+
+	.election-btn-blue-gray { 
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            color: #1a365d;
+            text-align: center; 
+            font-size: 18px; 
+            font-weight: bold; 
+            padding: 20px; 
+            margin: 15px 0; 
+            border: 1px solid rgba(187, 222, 251, 0.6);
+            box-shadow: 0 2px 8px rgba(187, 222, 251, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            font-family: 'Georgia', serif;
+            transition: all 0.3s ease;
+        } 
+
+        .election-btn-blue-gray:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 16px rgba(187, 222, 251, 0.3);
+            background: linear-gradient(135deg, #f3f8ff 0%, #c5e1fb 100%);
+        }
+
+@keyframes pulse-election {
+    0% { box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+    50% { box-shadow: 0 6px 16px rgba(79, 70, 229, 0.5); }
+    100% { box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+}
 
         .stats {
             background: #d4edda;
@@ -395,105 +447,105 @@ const scenarios = [
         type: "routine",
         year: 1,
         advisorAvailable: true,
-        advisorText: "Electoral systems have predictable trade-offs: First-past-the-post typically boosts Economy (+10-15) and Institutions (+8-12) through clear governance, but hurts Trust (-8-12) and Social (-12-18) as minorities feel excluded. Proportional representation usually increases Trust (+12-18) and Social (+10-15) but reduces Economy (-6-10) and Institutions (-5-10) due to coalition instability. Mixed systems split the difference with moderate effects (±3-8 each category). However, I've been wrong by 25% before - democratic reforms are unpredictable.",
+        advisorText: "Electoral systems have predictable trade-offs: First-past-the-post typically boosts Economy (around +8) and Institutions (around +7) through clear governance, but hurts Trust (around -7) and Social (around -10) as minorities feel excluded. Proportional representation usually increases Trust (around +10) and Social (around +9) but reduces Economy (around -5) and Institutions (around -6) due to coalition instability. Mixed systems balance these effects with moderate impacts (around ±3 each category). However, I've been wrong by 25% before - democratic reforms are unpredictable.",
         choices: [
             {
                 text: "A) First-Past-The-Post system (winner takes all in each district)",
                 consequences: "Clear majorities emerge quickly, enabling decisive governance. However, 42% of voters feel unrepresented, and regional parties begin organizing protest movements.",
-                effects: { trust: -10, economy: +12, social: -15, institutions: +9 },
+                effects: { trust: -7, economy: +8, social: -10, institutions: +7 },
                 next: [1]
             },
             {
                 text: "B) Proportional Representation (seats allocated by vote percentage)",
                 consequences: "Every significant viewpoint gains representation, creating broad legitimacy. Coalition negotiations become complex, requiring weeks to form governments.",
-                effects: { trust: +15, economy: -8, social: +12, institutions: -7 },
+                effects: { trust: +10, economy: -5, social: +9, institutions: -6 },
                 next: [1]
             },
             {
                 text: "C) Mixed system combining both approaches",
                 consequences: "A thoughtful compromise requiring extensive voter education campaigns. Initial confusion leads to 12% invalid ballots, but citizens adapt over time.",
-                effects: { trust: -2, economy: -4, social: +5, institutions: +2 },
+                effects: { trust: +2, economy: -2, social: +4, institutions: +3 },
                 next: [1]
             }
         ]
     },
     {
         id: 1,
-        title: "The Budget Crisis Inheritance",
-        text: "You inherit a massive budget deficit from the previous government. International creditors demand immediate action, public sector unions threaten strikes, and citizens expect the services they've grown accustomed to. Every option requires painful sacrifices.",
+        title: "The Economic Recovery Plan",
+        text: "Civitas faces economic stagnation with 15% unemployment and declining competitiveness. You have the chance to implement bold reforms that could revitalize the economy, but each approach carries significant risks and requires difficult choices.",
         type: "routine",
         year: 1,
         advisorAvailable: true,
-        advisorText: "Budget crises offer no good options. Austerity measures typically boost Economy (+12-18) and International credibility but devastate Social (-15-25) and Trust (-10-18). Tax increases might preserve Social (+5-10) but hurt Economy (-8-15) and anger voters (Trust -5-12). Borrowing more delays pain but worsens long-term Economy (-15-25). I estimate 70% accuracy on economic predictions, but political backlash is harder to predict.",
+        advisorText: "Economic recovery offers rare win-win potential. Infrastructure investment typically boosts Economy (around +12) and Social (around +8) through jobs, with moderate Institution gains (around +5), but requires significant Trust sacrifice (around -4) due to short-term costs. Tax cuts help Economy (around +10) and Trust (around +6) but hurt Social programs (around -5). Innovation focus provides long-term gains across most areas (around +6 each) but takes time to show results. My economic predictions are 75% accurate.",
         choices: [
             {
-                text: "A) Implement broad austerity measures to balance the budget",
-                consequences: "International creditors praise your fiscal responsibility, and business confidence improves. However, public sector layoffs affect 50,000 families, and essential services are cut dramatically.",
-                effects: { trust: -15, economy: +16, social: -22, institutions: +8 },
+                text: "A) Launch massive infrastructure program creating 200,000 jobs",
+                consequences: "Unemployment drops to 8% within two years as bridges, schools, and hospitals are built. However, debt increases substantially and taxes must rise, causing middle-class grumbling.",
+                effects: { trust: -4, economy: +12, social: +8, institutions: +5 },
                 next: [2]
             },
             {
-                text: "B) Raise taxes on wealthy and corporations to maintain services",
-                consequences: "Social services continue, but several major corporations relocate abroad, taking jobs with them. Wealthy citizens begin exploring residence in neighboring countries.",
-                effects: { trust: -8, economy: -12, social: +7, institutions: -3 },
+                text: "B) Cut business taxes and reduce regulations to attract investment",
+                consequences: "Foreign companies establish operations in Civitas, and the stock market soars. Citizens enjoy lower taxes, but environmental protections weaken and inequality grows.",
+                effects: { trust: +6, economy: +10, social: -3, institutions: -2 },
                 next: [2]
             },
             {
-                text: "C) Take on more debt while promising future reforms",
-                consequences: "Crisis is temporarily avoided, but credit rating agencies downgrade Civitas. Interest payments will consume 40% of future budgets, limiting all future options.",
-                effects: { trust: +5, economy: -18, social: +3, institutions: -12 },
+                text: "C) Invest heavily in education and technology innovation",
+                consequences: "A forward-thinking approach that builds long-term competitive advantages. Universities expand, tech startups flourish, and international reputation improves, though results take time.",
+                effects: { trust: +4, economy: +6, social: +6, institutions: +7 },
                 next: [2]
             }
         ]
     },
     {
         id: 2,
-        title: "The Pension System Collapse",
-        text: "Demographic changes mean the pension system will be bankrupt within five years. Current retirees depend on payments, working citizens resist higher contributions, and any reform will anger large voting blocs. Mathematics don't care about politics.",
+        title: "The Pension System Crisis",
+        text: "Demographics mean the pension system will be bankrupt within five years. Current retirees depend on payments, working citizens resist higher contributions, and any reform will anger large voting blocs. Mathematics don't care about politics.",
         type: "routine",
-        year: 1,
+        year: 2,
         advisorAvailable: true,
-        advisorText: "Pension crises have no popular solutions. Benefit cuts typically hurt Social (-12-20) and Trust (-15-25) but help Economy (+8-15) long-term. Raising contributions damages Economy (-5-12) and Trust (-8-15) but preserves Social (+3-8). Privatization might boost Economy (+10-18) but creates massive Social (-15-30) disruption. My confidence is only 60% - pension politics are explosive.",
+        advisorText: "Pension crises have no popular solutions. Benefit cuts typically hurt Social (around -12) and Trust (around -15) but help Economy (around +8) long-term. Raising contributions damages Economy (around -6) and Trust (around -8) but preserves Social (around +4). Gradual reform spreads the pain more evenly (around -5 to -7 each area). My confidence is only 60% - pension politics are explosive and unpredictable.",
         choices: [
             {
-                text: "A) Cut pension benefits by 30% for all recipients",
-                consequences: "The system becomes sustainable, but retiree poverty increases dramatically. Mass protests by elderly citizens dominate headlines for months, and your approval rating among seniors drops to 12%.",
-                effects: { trust: -20, economy: +12, social: -18, institutions: +5 },
+                text: "A) Gradually raise retirement age and contributions over 10 years",
+                consequences: "A slower approach that spreads pain over time. Labor unions organize protests, but most citizens accept the mathematical necessity. The system becomes sustainable.",
+                effects: { trust: -6, economy: -3, social: -5, institutions: +3 },
                 next: [3]
             },
             {
-                text: "B) Gradually raise retirement age to 68 while increasing worker contributions",
-                consequences: "A slower approach that spreads pain over time. Labor unions organize general strikes, and younger workers feel betrayed by having to work longer and pay more than previous generations.",
-                effects: { trust: -12, economy: +6, social: -15, institutions: +3 },
+                text: "B) Cut pension benefits by 25% for new retirees only",
+                consequences: "Current retirees are protected, but intergenerational tensions rise. Younger workers feel betrayed by having to work longer for less, creating long-term political instability.",
+                effects: { trust: -12, economy: +6, social: -8, institutions: -2 },
                 next: [3]
             }
         ]
     },
     {
         id: 3,
-        title: "The Minority Rights Backlash",
-        text: "After implementing policies to help the Valdris minority, majority citizens organize a referendum to 'protect traditional values.' Early polls show 65% support for overturning minority protections. Democratic principles clash with majority tyranny.",
+        title: "The Integration Success Story",
+        text: "Your innovative integration program for the Valdris minority has shown remarkable early results. International observers are impressed, businesses report improved social cohesion, and most citizens support expanding the program despite some vocal opposition.",
         type: "routine",
         year: 2,
         advisorAvailable: true,
-        advisorText: "Majority-minority conflicts create impossible choices. Defending minorities usually boosts Institutions (+8-15) and International standing but may hurt Trust (-8-18) and Social (-5-15) if majority backlash occurs. Compromising with majority typically improves Trust (+5-12) and Social (+8-15) but devastates minority confidence and Institutions (-10-20). My accuracy on social issues is only 65% - emotions run high.",
+        advisorText: "This represents a rare policy success with broad benefits. Expanding integration typically boosts Trust (around +10), Social (around +12), and Institutions (around +8) while providing moderate Economic gains (around +5) through reduced tensions and better social cohesion. Maintaining current levels still provides benefits (around +6 each area). Scaling back due to opposition usually hurts all metrics (around -4 to -8). My accuracy on successful policies is 80% - success builds on itself.",
         choices: [
             {
-                text: "A) Use constitutional courts to block the referendum as discriminatory",
-                consequences: "Minority rights are protected, and international observers praise your commitment to constitutional principles. However, majority citizens feel their democratic voice has been silenced by 'activist judges.'",
-                effects: { trust: -15, economy: -3, social: -12, institutions: +14 },
+                text: "A) Expand the program nationwide with additional funding",
+                consequences: "Integration accelerates across all communities. Crime in minority areas drops 40%, entrepreneurship flourishes, and Civitas becomes a model for other nations. Some backlash occurs but is overshadowed by success.",
+                effects: { trust: +8, economy: +6, social: +11, institutions: +9 },
                 next: [4]
             },
             {
-                text: "B) Allow the referendum but campaign vigorously against it",
-                consequences: "Democratic process is respected, but the campaign becomes bitter and divisive. You personally tour rural areas explaining minority protections, winning some converts but deepening polarization.",
-                effects: { trust: -8, economy: -5, social: -18, institutions: +8 },
+                text: "B) Maintain current program while monitoring results",
+                consequences: "Steady progress continues without major controversy. The program proves its worth over time, building broader acceptance and creating foundation for future expansion.",
+                effects: { trust: +5, economy: +4, social: +7, institutions: +6 },
                 next: [4]
             },
             {
-                text: "C) Negotiate a compromise that reduces some protections",
-                consequences: "A pragmatic approach that partially satisfies majority concerns while maintaining core minority rights. Both sides feel betrayed, but tensions decrease slightly.",
-                effects: { trust: -12, economy: +2, social: -9, institutions: -6 },
+                text: "C) Scale back program to reduce political tensions",
+                consequences: "Integration efforts slow, and early gains begin to erode. Minority communities feel abandoned, while majority opponents see weakness and press for further cuts.",
+                effects: { trust: -6, economy: -3, social: -7, institutions: -4 },
                 next: [4]
             }
         ]
@@ -509,222 +561,187 @@ const scenarios = [
         choices: [
             {
                 text: "A) Call early elections to restore democratic legitimacy",
-                consequences: "Democratic principles triumph, but your party suffers devastating losses. The new opposition government spends two years investigating your administration, paralyzing governance and reforms you started.",
-                effects: { trust: +12, economy: -15, social: -8, institutions: +18 },
+                consequences: "Democratic principles triumph, but your party suffers devastating losses. The new opposition government spends two years investigating your administration, paralyzing reforms you started.",
+                effects: { trust: +8, economy: -9, social: -2, institutions: +12 },
                 next: [5]
             },
             {
                 text: "B) Purge party leadership and promise comprehensive reforms",
                 consequences: "Dramatic action shows leadership, but your political base collapses. Former allies work against you, and governing becomes nearly impossible without party support.",
-                effects: { trust: -5, economy: -12, social: -6, institutions: +12 },
+                effects: { trust: -3, economy: -6, social: -3, institutions: +8 },
                 next: [5]
             }
         ]
     },
     {
         id: 5,
-        title: "The Security Dilemma",
+        title: "The Security Response",
         text: "A terrorist attack kills 23 citizens. Security agencies demand expanded surveillance powers, citizens want safety, but civil rights groups warn of authoritarian drift. International allies pressure you to 'do something decisive.' Fear and freedom compete.",
         type: "crisis",
-        year: 2,
+        year: 3,
         advisorAvailable: true,
-        advisorText: "Security crises create pressure for overreach. Enhanced surveillance might boost Trust (+8-15) if people feel safer and Military (+5-10), but could reduce Institutions (-8-15) and Social (-5-12) if seen as authoritarian. Measured responses usually maintain Institutions (+3-8) but may not satisfy public demand for action (Trust -5-10). My accuracy drops to 55% during crisis situations - public opinion is volatile.",
+        advisorText: "Security crises create pressure for overreach. Enhanced surveillance might boost Trust (around +8) if people feel safer and Military (around +6), but could reduce Institutions (around -8) and Social (around -6) if seen as authoritarian. Measured responses usually maintain Institutions (around +4) but may not satisfy public demand for action (Trust around -5). My accuracy drops to 55% during crisis situations - public opinion is volatile.",
         choices: [
             {
-                text: "A) Grant extensive new surveillance powers with sunset clauses",
-                consequences: "Citizens feel safer and security agencies prevent two additional attacks. However, surveillance overreach creates a chilling effect on free expression, and opposition politicians report being monitored.",
-                effects: { trust: +8, economy: -6, social: -12, institutions: -14, military: +12 },
+                text: "A) Grant limited surveillance powers with strict oversight and sunset clauses",
+                consequences: "Citizens feel safer and security agencies prevent one additional attack. Strong oversight prevents abuse, though some privacy advocates remain concerned about precedent.",
+                effects: { trust: +5, economy: -2, social: -3, institutions: +2, military: +6 },
                 next: [6]
             },
             {
                 text: "B) Increase security funding without expanding surveillance powers",
-                consequences: "A balanced approach that protects civil liberties while improving protection. Security officials privately complain about 'handcuffs,' and one smaller attack succeeds three months later.",
-                effects: { trust: -5, economy: -8, social: +5, institutions: +6, military: +3 },
+                consequences: "A principled approach that protects civil liberties while improving protection. Most citizens support the balance, though security officials privately complain about limitations.",
+                effects: { trust: +2, economy: -4, social: +3, institutions: +6, military: +3 },
                 next: [6]
             }
         ]
     },
-    {
-        id: 6,
-        title: "The Trade War Escalation",
-        text: "Major trading partners impose tariffs on Civitas exports in retaliation for your environmental policies. Jobs are lost immediately, but backing down would undermine climate commitments. Economic pain today versus environmental protection tomorrow.",
-        type: "routine",
-        year: 3,
-        advisorAvailable: true,
-        advisorText: "Trade conflicts create difficult choices. Retaliatory tariffs might protect domestic industry (Economy +5-12) but reduce international cooperation (Institutions -8-15) and raise consumer prices (Social -5-12). Backing down preserves trade (Economy +8-15) but signals weakness (Trust -8-15, Institutions -5-12). Compromise usually has moderate negative effects across multiple areas. My trade prediction accuracy is about 70%.",
-        choices: [
-            {
-                text: "A) Impose counter-tariffs to protect domestic industries",
-                consequences: "Domestic manufacturers celebrate, but a full trade war erupts. Consumer prices rise 15%, export industries collapse, and international cooperation on other issues suffers.",
-                effects: { trust: -8, economy: -10, social: -15, institutions: -12 },
-                next: [7]
-            },
-            {
-                text: "B) Negotiate bilateral deals while maintaining environmental standards",
-                consequences: "Complex negotiations take 18 months while unemployment rises. Final deals preserve most environmental policies but require painful concessions on labor protections.",
-                effects: { trust: -12, economy: -6, social: -9, institutions: -3 },
-                next: [7]
-            },
-            {
-                text: "C) Abandon environmental policies to restore trade relationships",
-                consequences: "Trade rebounds quickly and jobs return, but climate activists feel betrayed. International environmental reputation collapses, and young voters abandon your party in large numbers.",
-                effects: { trust: -15, economy: +12, social: -18, institutions: -8 },
-                next: [7]
-            }
-        ]
-    },
+{
+    id: 6,
+    title: "The Education Revolution",
+    text: "Teachers demand 40% pay raises after years of decline, students protest overcrowded classrooms, and parents want both better schools and lower taxes. Meanwhile, tech companies offer to fund revolutionary digital learning programs that could transform education but require firing thousands of traditional teachers.",
+    type: "routine",
+    year: 3,
+    advisorAvailable: true,
+    advisorText: "Education investments typically provide excellent long-term returns. Traditional funding boosts Social (around +9) and Trust (around +6) through popular teacher support, with moderate Institution gains (around +5), but hurts Economy (around -7) through costs. Digital transformation helps Economy (around +8) and Institutions (around +10) through innovation leadership but damages Social (around -8) and Trust (around -6) due to job losses. Hybrid approaches provide moderate gains across most areas (around +4 to +6). My education predictions are 75% accurate - results are measurable.",
+    choices: [
+        {
+            text: "A) Grant teacher pay raises and hire 15,000 new educators",
+            consequences: "Class sizes shrink to 18 students, teacher morale soars, and educational outcomes improve dramatically within three years. However, education now consumes 35% of the budget, requiring cuts elsewhere.",
+            effects: { trust: +7, economy: -6, social: +10, institutions: +6 },
+            next: [7]
+        },
+        {
+            text: "B) Partner with tech companies for AI-powered personalized learning",
+            consequences: "Civitas becomes the world's first fully digital education system. Learning outcomes improve 60%, costs drop significantly, but 25,000 teachers lose jobs and many families struggle with the transition.",
+            effects: { trust: -5, economy: +9, social: -7, institutions: +11 },
+            next: [7]
+        },
+        {
+            text: "C) Implement gradual reforms with modest pay raises and pilot digital programs",
+            consequences: "A balanced approach that satisfies no one completely but avoids major disruption. Steady improvements occur, and the education system becomes a model of thoughtful innovation.",
+            effects: { trust: +4, economy: +2, social: +5, institutions: +7 },
+            next: [7]
+        }
+    ]
+},
     {
         id: 7,
-        title: "The Media Concentration Crisis",
-        text: "Three media giants merge, creating a monopoly controlling 85% of news. They demand regulatory approval while threatening to move operations abroad if denied. Independent journalism dies, but fighting powerful media creates new enemies.",
+        title: "The Environmental Innovation Opportunity",
+        text: "Climate pressures create both crisis and opportunity. You can position Civitas as a green technology leader, attracting investment and creating jobs while addressing environmental concerns. However, traditional industries resist change and transition costs are high.",
         type: "routine",
         year: 3,
         advisorAvailable: true,
-        advisorText: "Media regulation affects democratic health unpredictably. Blocking mergers typically boosts Institutions (+12-20) and Trust (+8-15) long-term but may hurt Economy (-8-15) if companies relocate. Allowing concentration helps Economy (+5-12) but usually damages Institutions (-15-25) and Trust (-10-18) as media diversity collapses. My accuracy on media issues is only 60% - corporate retaliation is hard to predict.",
+        advisorText: "Environmental leadership offers significant upside potential. Green transition typically boosts Economy (around +8) through new industries, Social (around +10) through environmental benefits, and Institutions (around +7) through international leadership, but may hurt Trust (around -5) due to transition costs. Gradual approaches reduce negative effects (around -2 to -3) but limit gains (around +4 to +6). My environmental predictions are 70% accurate.",
         choices: [
             {
-                text: "A) Block the merger and enforce media ownership limits",
-                consequences: "Media diversity is preserved, but the companies relocate headquarters abroad, taking 12,000 jobs and significant tax revenue. They continue influencing Civitas politics from outside.",
-                effects: { trust: +10, economy: -12, social: -6, institutions: +15 },
+                text: "A) Launch comprehensive green transition with retraining programs",
+                consequences: "Civitas becomes a renewable energy hub. New green industries create 150,000 jobs, air quality improves dramatically, and international investment pours in. Transition is challenging but successful.",
+                effects: { trust: -3, economy: +9, social: +8, institutions: +8 },
                 next: [8]
             },
             {
-                text: "B) Allow the merger with content diversity requirements",
-                consequences: "Economic disruption is avoided, but media becomes increasingly biased. Opposition politicians struggle to get fair coverage, and public discourse becomes more polarized.",
-                effects: { trust: -12, economy: +8, social: -15, institutions: -18 },
+                text: "B) Implement gradual environmental improvements",
+                consequences: "Steady progress without major disruption. Environmental standards improve, some green jobs are created, and most industries adapt successfully over time.",
+                effects: { trust: +2, economy: +4, social: +5, institutions: +4 },
+                next: [8]
+            },
+            {
+                text: "C) Maintain current policies to avoid economic disruption",
+                consequences: "Short-term stability is preserved, but environmental problems worsen. International reputation suffers, and growing climate costs begin affecting the economy.",
+                effects: { trust: -2, economy: -4, social: -6, institutions: -5 },
                 next: [8]
             }
         ]
     },
     {
         id: 8,
-        title: "The Military Modernization Ultimatum",
-        text: "Your generals present intelligence showing neighboring countries' advanced weapons programs and issue an ultimatum: approve massive defense spending immediately or face 'consequences for national security.' Military pressure tests civilian control.",
+        title: "The Healthcare Innovation Choice",
+        text: "New medical technologies offer unprecedented treatment possibilities, but costs are enormous. You must decide whether to invest in becoming a medical technology leader, implement basic universal coverage, or maintain the current mixed system.",
         type: "routine",
-        year: 3,
+        year: 4,
         advisorAvailable: true,
-        advisorText: "Military pressure creates dangerous precedents. Full modernization typically boosts Military (+20-30) significantly but devastates Economy (-15-25) and Social (-12-20) through diverted spending. Partial measures might give Military (+8-15) with moderate costs (-5-12 each). Rejection usually drops Military (-15-25) but could trigger civil-military crisis. Military confrontations are my least accurate predictions - only 50% reliability.",
+        advisorText: "Healthcare choices offer different benefits. Technology leadership typically boosts Economy (around +10) through medical industries and Institutions (around +8) through international reputation, with moderate Social gains (around +5), but requires significant Trust sacrifice (around -6) due to costs. Universal basic coverage helps Social (around +9) and Trust (around +4) but costs Economy (around -5). Current system maintains balance but provides limited gains (around +2 each). Healthcare predictions are 65% accurate.",
         choices: [
             {
-                text: "A) Approve full modernization to maintain military loyalty",
-                consequences: "Military becomes regionally dominant, but massive spending crowds out healthcare and education. Tax increases to fund military create widespread civilian unrest.",
-                effects: { trust: -15, economy: -20, social: -18, institutions: -8, military: +25 },
+                text: "A) Invest heavily in medical technology and research",
+                consequences: "Civitas becomes a global medical hub. Pharmaceutical companies relocate headquarters here, medical tourism flourishes, and breakthrough treatments are developed, though costs are high initially.",
+                effects: { trust: -4, economy: +10, social: +6, institutions: +9 },
                 next: [9]
             },
             {
-                text: "B) Reject military demands and assert civilian authority",
-                consequences: "Constitutional principles are upheld, but military leadership becomes openly hostile. Three generals resign publicly, criticizing 'political interference' and warning of 'security gaps.'",
-                effects: { trust: -12, economy: +5, social: +8, institutions: +12, military: -22 },
+                text: "B) Implement universal basic healthcare for all citizens",
+                consequences: "Healthcare anxiety disappears for most families. Preventive care improves population health, productivity increases, and social cohesion strengthens through shared benefits.",
+                effects: { trust: +6, economy: -3, social: +10, institutions: +5 },
                 next: [9]
             },
             {
-                text: "C) Compromise with targeted upgrades and better pay",
-                consequences: "A middle path that partially satisfies military while limiting fiscal damage. However, both military hardliners and budget hawks criticize the half-measures.",
-                effects: { trust: -8, economy: -12, social: -8, institutions: +3, military: +8 },
+                text: "C) Improve current system with targeted reforms",
+                consequences: "Modest improvements in access and quality without major disruption. Most citizens see some benefits, costs remain manageable, and the system becomes more efficient.",
+                effects: { trust: +3, economy: +2, social: +4, institutions: +3 },
                 next: [9]
             }
         ]
     },
     {
         id: 9,
-        title: "The Healthcare Rationing Decision",
-        text: "An aging population and expensive new treatments create impossible healthcare choices. Doctors say rationing is inevitable - either by price, age, or treatment type. Someone will suffer regardless of your choice.",
+        title: "The Democratic Participation Revolution",
+        text: "Citizens demand more direct involvement in governance through digital democracy, citizen assemblies, and participatory budgeting. This could revitalize democracy but also create chaos and inefficiency. How much direct democracy is too much?",
         type: "routine",
         year: 4,
         advisorAvailable: true,
-        advisorText: "Healthcare rationing has no good options. Age-based rationing preserves resources (Economy +8-15) but creates massive Social (-20-30) backlash from elderly. Price rationing helps Economy (+12-20) but devastates Social (-18-28) and Trust (-15-25). Treatment rationing has moderate effects but satisfies no one. Healthcare emotions make my predictions only 60% accurate.",
+        advisorText: "Participatory democracy experiments show mixed results. Full digital democracy typically boosts Trust (around +12) and Social (around +8) through engagement but can hurt Economy (around -6) and sometimes Institutions (around -4) through inefficiency. Citizen assemblies usually provide moderate gains across all areas (around +5 to +7). Limited participation provides smaller but safer benefits (around +3 to +5). My accuracy on democratic innovations is only 60% - these are uncharted waters.",
         choices: [
             {
-                text: "A) Ration expensive treatments based on cost-effectiveness analysis",
-                consequences: "A technocratic approach that maximizes health outcomes per dollar spent. Families of patients denied expensive treatments organize emotional media campaigns against 'death panels.'",
-                effects: { trust: -18, economy: +12, social: -22, institutions: +8 },
+                text: "A) Implement comprehensive digital democracy and citizen assemblies",
+                consequences: "Political engagement soars as citizens directly shape policy through online platforms and deliberative assemblies. Some decisions are chaotic, but democratic legitimacy reaches new heights.",
+                effects: { trust: +11, economy: -4, social: +9, institutions: +6 },
                 next: [10]
             },
             {
-                text: "B) Implement means-testing for all non-emergency procedures",
-                consequences: "Middle-class families suddenly face medical bills they can't afford. Medical tourism increases as citizens seek treatment abroad, and class-based healthcare creates deep resentment.",
-                effects: { trust: -20, economy: +15, social: -25, institutions: -12 },
+                text: "B) Create citizen assemblies for major policy decisions",
+                consequences: "Thoughtful citizen deliberation produces high-quality policy recommendations. Democratic satisfaction increases, and polarization decreases as people engage across difference.",
+                effects: { trust: +7, economy: +3, social: +6, institutions: +8 },
                 next: [10]
             },
             {
-                text: "C) Increase healthcare taxes to avoid rationing",
-                consequences: "Universal care is preserved, but taxes rise to 45% of income for middle-class families. Businesses relocate to lower-tax countries, and economic competitiveness suffers.",
-                effects: { trust: -12, economy: -18, social: +8, institutions: +5 },
+                text: "C) Expand consultation but maintain representative democracy",
+                consequences: "Citizens feel more heard through surveys, town halls, and advisory referendums. Democratic legitimacy improves modestly while maintaining governmental efficiency.",
+                effects: { trust: +4, economy: +2, social: +3, institutions: +4 },
                 next: [10]
             }
         ]
     },
     {
         id: 10,
-        title: "The Climate Emergency Response",
-        text: "Extreme weather causes $50 billion in damages annually. Scientists demand immediate action, but transition costs are enormous. Delaying action risks catastrophe, but rapid change will devastate traditional industries and communities.",
-        type: "routine",
-        year: 4,
-        advisorAvailable: true,
-        advisorText: "Climate policy creates unavoidable trade-offs. Rapid transition might boost Social (+15-25) long-term and Institutions (+8-15) but devastates Economy (-20-35) short-term. Gradual approaches balance effects (±8-15 each) but may not prevent damage. Adaptation-only strategies help Economy (+8-15) but hurt Social (-15-25) and Trust (-10-20). Climate predictions vary wildly - 40% margin of error.",
-        choices: [
-            {
-                text: "A) Implement emergency green transition with massive job retraining",
-                consequences: "Carbon emissions drop 60% in three years, but economic disruption is unprecedented. Entire regions become economically devastated, and political backlash grows stronger each year.",
-                effects: { trust: -8, economy: -25, social: +12, institutions: +15 },
-                next: [11]
-            },
-            {
-                text: "B) Focus on climate adaptation while maintaining current industries",
-                consequences: "Infrastructure becomes climate-resistant, but emissions continue rising. International isolation grows, and climate disasters worsen despite improved defenses.",
-                effects: { trust: -12, economy: +8, social: -18, institutions: -10 },
-                next: [11]
-            }
-        ]
-    },
-    {
-        id: 11,
-        title: "The Democratic Crisis Moment",
-        text: "Opposition parties refuse to participate in parliament, claiming your government lacks legitimacy. Half the country doesn't recognize election results, and parallel institutions emerge. Democracy itself hangs in the balance.",
-        type: "crisis",
-        year: 5,
-        advisorAvailable: true,
-        advisorText: "Democratic legitimacy crises are the ultimate test. Compromise might restore Trust (+10-20) and Institutions (+15-25) but could signal weakness, encouraging future challenges. Using legal authority preserves Institutions (+8-15) but may reduce Trust (-8-18) if seen as authoritarian. Capitulation destroys your authority but might save democratic norms. This is beyond my expertise - 30% accuracy at best.",
-        choices: [
-            {
-                text: "A) Offer power-sharing arrangement with opposition",
-                consequences: "Democratic crisis ends, but your agenda becomes impossible to implement. Opposition uses shared power to block all reforms while claiming credit for any successes.",
-                effects: { trust: +15, economy: -8, social: +8, institutions: +20 },
-                next: [12]
-            },
-            {
-                text: "B) Use constitutional authority to maintain governance while seeking dialogue",
-                consequences: "Government continues functioning, but legitimacy crisis deepens. Some international observers express concern about 'authoritarian tendencies,' though others support constitutional order.",
-                effects: { trust: -12, economy: -5, social: -15, institutions: +12 },
-                next: [12]
-            }
-        ]
-    },
-    {
-        id: 12,
-        title: "The Final Choice",
-        text: "As your term ends, you face the ultimate test of democratic leadership: ensuring peaceful transition despite deep political divisions. Your choice will determine whether Civitas emerges stronger or fragments further.",
+        title: "The Final Democratic Test",
+        text: "As your first term nears its end, the upcoming election looms large. Opposition parties challenge several of your key policies in court and promise to reverse everything you've accomplished if they win. You must decide how to campaign and prepare for the democratic transition that awaits.",
         type: "routine",
         year: 5,
         advisorAvailable: true,
-        advisorText: "Final transitions determine democratic legacy. Graceful stepping down typically boosts all categories (+8-15 each) through normative example. Constitutional innovations might have major positive effects (+15-30 Institutions) but risk unintended consequences. Attempting to extend power destroys democratic legitimacy entirely. This is the most important decision - my confidence is only 50%.",
+        advisorText: "Pre-election positioning determines both campaign success and democratic legacy. Running a positive, unifying campaign typically boosts all categories (around +6 to +10 each) and improves election chances. Constitutional protections might provide major Institution gains (around +15) but risk moderate Trust loss (around -4) if seen as constraining democracy. Building consensus creates moderate gains across all areas (around +5 to +8) and broadens your coalition. This decision affects both your final scores and election prospects - my confidence is only 50%.",
         choices: [
             {
-                text: "A) Step down gracefully and support peaceful transition",
-                consequences: "Your dignified exit sets powerful precedent for democratic norms. Despite policy disagreements, you become respected as a leader who put country above personal power.",
-                effects: { trust: +18, economy: +5, social: +12, institutions: +22 },
+                text: "A) Run a positive campaign focused on democratic values and unity",
+                consequences: "Your principled campaign elevates political discourse and sets a powerful example for future elections. Citizens respond positively to your focus on shared democratic values rather than partisan attacks.",
+                effects: { trust: +10, economy: +5, social: +7, institutions: +12 },
                 next: ["election"]
             },
             {
-                text: "B) Propose constitutional reforms to prevent future crises",
-                consequences: "Bold structural changes address democratic weaknesses, but the reform process is chaotic and divisive. Whether improvements last depends on future leaders' commitment.",
-                effects: { trust: +8, economy: -12, social: -5, institutions: +25 },
+                text: "B) Build cross-party consensus to protect key democratic reforms",
+                consequences: "Through patient negotiation, you secure bipartisan support for essential democratic institutions before the election. Some policies may change, but the democratic framework you've built will endure regardless of who wins.",
+                effects: { trust: +6, economy: +4, social: +5, institutions: +11 },
+                next: ["election"]
+            },
+            {
+                text: "C) Enshrine key policies in constitutional amendments before the election",
+                consequences: "Bold structural changes protect your most important achievements from reversal by future governments. The rushed process is controversial and opponents claim you're constraining democracy, but reforms are secured.",
+                effects: { trust: -4, economy: -3, social: +2, institutions: +15 },
                 next: ["election"]
             }
         ]
     }
-];
-// Enhanced failure scenarios with more nuanced triggers and better narratives
+];// Enhanced failure scenarios with more nuanced triggers and better narratives
 const failureScenarios = {
     institutionalCollapse: {
         title: "Democratic Institutions Crumble",
@@ -896,12 +913,16 @@ const failureScenarios = {
             const content = document.getElementById('scenario-content');
             const scenarioClass = scenario.type === 'crisis' ? 'urgent-scenario' : 'routine-scenario';
             
-            let advisorButton = '';
+                        let advisorButton = '';
             if (scenario.advisorAvailable && gameState.advisorUses > 0) {
                 advisorButton = `
-                    <button class="choice-btn advisor-btn" onclick="consultAdvisor(${scenarioId})">
+                    <button class="choice-btn advisor-btn" id="advisor-btn-${scenarioId}" onclick="consultAdvisor(${scenarioId})">
                         💡 Consult Political Advisor (${gameState.advisorUses} uses remaining)
                     </button>
+                    <div class="advisor-box" id="advisor-box-${scenarioId}">
+                        <h4>🎓 Advisor's Analysis:</h4>
+                        <p>${scenario.advisorText}</p>
+                    </div>
                 `;
             } else if (scenario.advisorAvailable && gameState.advisorUses === 0) {
                 advisorButton = `
@@ -941,21 +962,19 @@ const failureScenarios = {
 
             gameState.advisorUses--;
             
-            const content = document.getElementById('scenario-content');
-            const advisorBox = `
-                <div class="advisor-box">
-                    <h4>🎓 Political Advisor's Analysis:</h4>
-                    <p>${scenario.advisorText}</p>
-                </div>
-            `;
+            const advisorBtn = document.getElementById(`advisor-btn-${scenarioId}`);
+            const advisorBox = document.getElementById(`advisor-box-${scenarioId}`);
             
-            const choiceContainer = content.querySelector('.choice-container');
-            choiceContainer.insertAdjacentHTML('beforebegin', advisorBox);
-            
-            const advisorBtn = content.querySelector('.advisor-btn');
-            if (advisorBtn) {
+            if (advisorBtn && advisorBox) {
+                // Add expanded class to button for visual connection
+                advisorBtn.classList.add('expanded');
                 advisorBtn.disabled = true;
                 advisorBtn.textContent = `💡 Advisor Consulted (${gameState.advisorUses} uses remaining)`;
+                
+                // Trigger the smooth expansion
+                setTimeout(() => {
+                    advisorBox.classList.add('expanded');
+                }, 50); // Small delay for better visual effect
             }
         }
 
@@ -976,6 +995,12 @@ const failureScenarios = {
             });
 
             const content = document.getElementById('scenario-content');
+            
+            // Check if the next scenario is the election
+            const isElectionNext = choice.next && choice.next[0] === "election";
+            const buttonClass = isElectionNext ? "choice-btn election-btn-blue-gray" : "choice-btn";
+            const buttonText = isElectionNext ? "🗳️ Continue to Elections" : "Continue";
+            
             content.innerHTML = `
                 <div class="scenario ${scenario.type === 'crisis' ? 'urgent-scenario-no-shake' : 'routine-scenario'}">
                     <h3>${scenario.title}</h3>
@@ -987,14 +1012,13 @@ const failureScenarios = {
                     <h4>Consequences:</h4>
                     <p>${choice.consequences}</p>
                 </div>
-                <button class="choice-btn" onclick="continueGame(${JSON.stringify(choice.next).replace(/"/g, '&quot;')})">
-                    Continue
+                <button class="${buttonClass}" onclick="continueGame(${JSON.stringify(choice.next).replace(/"/g, '&quot;')})">
+                    ${buttonText}
                 </button>
             `;
 
             updateGameStats();
         }
-
         function continueGame(possibleNext) {
             if (checkFailureConditions()) {
                 return;
