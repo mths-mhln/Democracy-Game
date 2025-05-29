@@ -186,29 +186,39 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 10px;
+            justify-items: center;
         }
         
-        @media (max-width: 768px) {
+        /* When 5 items can't fit in one row, go to 3×2 layout */
+        @media (max-width: 900px) {
+            .stats {
+                grid-template-columns: repeat(3, 1fr);
+                justify-content: center;
+            }
+            /* Center the bottom row (items 4 and 5) */
+            .stat-item:nth-child(4) {
+                grid-column: 1;
+                justify-self: end;
+            }
+            .stat-item:nth-child(5) {
+                grid-column: 3;
+                justify-self: start;
+            }
+        }
+        
+        /* When 3 items can't fit, go to 2×2×1 layout */
+        @media (max-width: 600px) {
             .stats {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
             }
-            .stat-item:last-child {
+            /* Reset the 3×2 positioning */
+            .stat-item:nth-child(4) {
+                grid-column: auto;
+                justify-self: center;
+            }
+            .stat-item:nth-child(5) {
                 grid-column: 1 / -1;
                 justify-self: center;
-                max-width: 50%;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .stats {
-                grid-template-columns: 1fr;
-                gap: 6px;
-            }
-            .stat-item:last-child {
-                grid-column: auto;
-                justify-self: auto;
-                max-width: none;
             }
         }
         .stat-item {
