@@ -738,6 +738,86 @@
             }
         ];
         const failureScenarios = {
+
+civilWarOutbreak: {
+    title: "Civil War Erupts",
+    trigger: { trust: 20, social: 20, military: 20, institutions: 25 },
+    text: "Long-simmering divisions explode into open conflict as competing factions claim legitimate authority. Military units split their loyalties, regional governments declare independence, and armed civilian groups form militias.",
+    ending: "The country dissolves into a patchwork of warring territories. International peacekeepers eventually broker a fragile federation, but the unified democratic state is gone forever, replaced by a loose confederation of mutually suspicious regions.",
+    legacy: "You are remembered as the leader who presided over the nation's bloodiest chapter, whose inability to bridge divides led to a civil war that shattered the country into pieces that could never be properly reassembled."
+},
+
+authoritarianTransition: {
+    title: "Gradual Authoritarian Capture",
+    trigger: { trust: 25, institutions: 20, military: 25 },
+    text: "Using legal mechanisms and emergency powers, a coalition of military leaders and institutional actors systematically dismantle democratic checks and balances while maintaining the appearance of constitutional government.",
+    ending: "Elections still occur, but opposition parties face harassment, media is controlled, and courts serve power rather than justice. Democracy becomes a hollow shell—the forms remain but the substance has been gutted.",
+    legacy: "History records you as the democratic leader who sleepwalked into authoritarianism, too naive to recognize the slow-motion coup that transformed your democracy into a managed autocracy."
+},
+
+            stateDisintegration: {
+    title: "Complete State Disintegration", 
+    trigger: { economy: 25, institutions: 25, social: 30 },
+    text: "The perfect storm hits: economic systems collapse entirely, government institutions cease functioning, and society fractures beyond repair. No single crisis caused this—they all fed into each other until the state itself simply dissolved.",
+    ending: "Civitas vanishes as a functioning entity. UN peacekeepers establish temporary administration zones while international donors slowly rebuild basic services. The country becomes a ward of the international community.",
+    legacy: "Your name becomes a cautionary tale studied in political science courses—the leader whose cascading failures were so comprehensive that an entire nation-state had to be rebuilt from scratch by foreign administrators."
+},
+
+revolutionaryUpheavel: {
+    title: "Revolutionary Overthrow",
+    trigger: { economy: 25, social: 25, trust: 30 },
+    text: "Economic desperation combines with social unrest and lost faith in government to create a perfect revolutionary storm. Mass movements reject not just your leadership but the entire system of governance.",
+    ending: "Revolutionary councils seize power promising to build a 'new society from the ground up.' The old democratic constitution is abolished, and radical restructuring begins amid chaos and purges of the former establishment.",
+    legacy: "You are remembered as the last leader of the old order, whose failures were so profound they convinced an entire people to gamble everything on untested revolutionary promises."
+},
+
+foreignIntervention: {
+    title: "International Intervention",
+    trigger: { economy: 20, institutions: 25, military: 30 },
+    text: "Neighboring powers, citing 'humanitarian concerns' and 'regional stability,' announce a joint intervention to 'restore order and democratic governance' as your weakened military cannot resist.",
+    ending: "Foreign administrators take control of key institutions while maintaining you as a figurehead. Democracy continues in name, but real decisions are made by international overseers who treat your nation as a protectorate.",
+    legacy: "Your name becomes synonymous with national humiliation—the leader who was so ineffective that foreign powers had to intervene to save the country from your incompetence."
+},
+
+	     revolutionaryUpheaval: {
+                title: "Popular Democratic Revolution",
+                trigger: { trust: 25, social: 25 },
+                text: "Massive protests demand your immediate resignation and complete governmental reform. Government buildings are occupied, your own security forces refuse to disperse crowds, and alternative democratic structures emerge.",
+                ending: "You flee the country as revolutionary committees take power promising 'true democracy.' The new government struggles with legitimacy and governance, having destroyed the old system without clear plans for replacement.",
+                legacy: "History records you as a failed democratic leader whose incompetence sparked a revolution that destroyed the stable democracy you inherited, replacing it with chaotic revolutionary democracy that struggled to govern."
+            },
+
+institutionalParalysis: {
+    title: "Government Breakdown",
+    trigger: { institutions: 25, trust: 25 },
+    text: "Government institutions become so dysfunctional and distrusted that they simply stop functioning. Courts have no authority, laws go unenforced, and public services collapse as citizens refuse to cooperate.",
+    ending: "Local strongmen and private organizations fill the void left by failed government. Democracy survives only in isolated communities while most of the country operates under informal authority structures.",
+    legacy: "You are remembered as the leader who presided over the quiet dissolution of government itself—not through revolution or war, but through simple institutional decay and public abandonment."
+},
+
+economicDictatorshipEmergence: {
+    title: "Technocratic Authoritarian Rule",
+    trigger: { economy: 25, trust: 25 },
+    text: "Economic collapse destroys public faith in democratic decision-making. Citizens demand 'competent leadership' over 'political theater,' opening the door for technocratic authoritarians promising efficiency over freedom.",
+    ending: "A council of economists and administrators takes power, suspending elections as 'economically destabilizing.' Democracy is sacrificed for economic recovery, with citizens initially supporting the trade-off.",
+    legacy: "History remembers you as the democratic leader whose economic failures convinced an entire nation to voluntarily surrender their political freedoms in exchange for the promise of prosperity."
+},
+
+socialDisintegration: {
+    title: "Complete Social Breakdown",
+    trigger: { social: 20, trust: 20 },
+    text: "Society fragments into mutually hostile groups that refuse to recognize shared institutions or common citizenship. Democratic governance becomes impossible when citizens see fellow voters as enemies rather than fellow citizens.",
+    ending: "The country continues to exist on maps, but functions as a collection of parallel societies that interact only through conflict. Democracy dies not from external threats but from internal dissolution of the social fabric that sustained it.",
+    legacy: "Your name is remembered as the leader who failed to maintain the basic social cohesion necessary for democracy, allowing the nation to dissolve into a collection of tribes sharing nothing but geography."
+},
+
+militaryAdministration: {
+    title: "Military Administrative State",
+    trigger: { military: 20, institutions: 20 },
+    text: "Military leadership, citing civilian government incompetence, gradually assumes administrative control while promising to 'restore institutional effectiveness.' They frame their actions as saving democracy from itself.",
+    ending: "Civilian government continues to exist but only implements decisions made by military administrators. Democracy becomes a performance staged for international observers while real power rests with generals.",
+    legacy: "You are remembered as the civilian leader who lost the most fundamental principle of democratic government—civilian control of the military—not through a coup but through abdication of responsibility."
+},
             institutionalCollapse: {
                 title: "Democratic Institutions Crumble",
                 trigger: { institutions: 15 },
@@ -772,20 +852,6 @@
                 text: "Citing 'governmental dysfunction and threats to national security,' the military announces it is 'temporarily' taking responsibility for maintaining stability while civilian government 'reorganizes.'",
                 ending: "Tanks don't roll through streets, but generals now attend all cabinet meetings as 'advisors.' Civilian government becomes a facade for military decision-making, with democracy continuing in form but not substance.",
                 legacy: "You are remembered as the civilian leader who lost control of the military, ending centuries of democratic tradition not through crisis or revolution, but through gradual surrender of civilian authority to military 'expertise.'"
-            },
-            revolutionaryUpheaval: {
-                title: "Popular Democratic Revolution",
-                trigger: { trust: 25, social: 25 },
-                text: "Massive protests demand your immediate resignation and complete governmental reform. Government buildings are occupied, your own security forces refuse to disperse crowds, and alternative democratic structures emerge.",
-                ending: "You flee the country as revolutionary committees take power promising 'true democracy.' The new government struggles with legitimacy and governance, having destroyed the old system without clear plans for replacement.",
-                legacy: "History records you as a failed democratic leader whose incompetence sparked a revolution that destroyed the stable democracy you inherited, replacing it with chaotic revolutionary democracy that struggled to govern."
-            },
-            totalSystemFailure: {
-                title: "Complete State Collapse",
-                trigger: { economy: 25, institutions: 25, social: 30 },
-                text: "Multiple crises converge: economic collapse, institutional failure, and social breakdown occur simultaneously.",
-                ending: "Civitas ceases to function as a coherent state. International intervention establishes a protectorate that slowly rebuilds basic governance over decades.",
-                legacy: "Your name enters history alongside other leaders whose failures were so complete they destroyed the nations they led, requiring international reconstruction."
             }
         };
         function startGame() {
