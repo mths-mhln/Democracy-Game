@@ -184,8 +184,32 @@
             padding: 15px;
             margin: 15px 0;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-template-columns: repeat(5, 1fr);
             gap: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .stat-item:last-child {
+                grid-column: 1 / -1;
+                justify-self: center;
+                max-width: 50%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats {
+                grid-template-columns: 1fr;
+                gap: 6px;
+            }
+            .stat-item:last-child {
+                grid-column: auto;
+                justify-self: auto;
+                max-width: none;
+            }
         }
         .stat-item {
             text-align: center;
