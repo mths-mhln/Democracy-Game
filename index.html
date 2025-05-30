@@ -880,7 +880,7 @@ militaryAdministration: {
                 element.classList.remove('stat-critical', 'stat-danger');
                 if (gameState[statNames[index]] <= 15) {
                     element.classList.add('stat-critical');
-                } else if (gameState[statNames[index]] <= 35) {
+                } else if (gameState[statNames[index]] <= 40) {
                     element.classList.add('stat-danger');
                 }
             });
@@ -1049,121 +1049,197 @@ militaryAdministration: {
     if (items.length === 2) return items.join(' and ');
     return items.slice(0, -1).join(', ') + ', and ' + items[items.length - 1];
 }
-	function showElectionResults() {
-            const totalScore = gameState.trust + gameState.economy + gameState.social + gameState.institutions + gameState.military;
-            const scores = {
-                trust: gameState.trust,
-                economy: gameState.economy,
-                social: gameState.social,
-                institutions: gameState.institutions,
-                military: gameState.military
-            };
-            const strengths = [];
-            const weaknesses = [];
-            const scoreNames = {
-                trust: "Public Trust",
-                economy: "Economy",
-                social: "Social Cohesion",
-                institutions: "Institutions",
-                military: "Military Loyalty"
-            };
-            Object.entries(scores).forEach(([key, value]) => {
-                if (value >= 80) {
-                    strengths.push(scoreNames[key]);
-                } else if (value < 40) {
-                    weaknesses.push(scoreNames[key]);
-                }
-            });
-            let result, description, baseLegacy, resultColor;
-            if (totalScore >= 400) {
-                result = "OVERWHELMING VICTORY";
-                description = "You win re-election with 78% of the vote!";
-                baseLegacy = "You are hailed as one of the greatest democratic leaders in history. Civitas has become a model democracy that other nations study and emulate.";
-                resultColor = "#155724";
-            } else if (totalScore >= 350) {
-    result = "CLEAR VICTORY";
-    description = "You win re-election with 62% of the vote.";
+function showElectionResults() {
+    const totalScore = gameState.trust + gameState.economy + gameState.social + gameState.institutions + gameState.military;
+    const scores = {
+        trust: gameState.trust,
+        economy: gameState.economy,
+        social: gameState.social,
+        institutions: gameState.institutions,
+        military: gameState.military
+    };
     
-    // Check for significant weaknesses even in victory
-    const significantWeaknesses = [];
+    const excellentAreas = []; // 80-100
+    const solidAreas = []; // 50-79
+    const concerningAreas = []; // 40-49 range
+    const criticalAreas = []; // Below 40
+    
+    const scoreNames = {
+        trust: "Public Trust",
+        economy: "Economy",
+        social: "Social Cohesion",
+        institutions: "Institutions",
+        military: "Military Loyalty"
+    };
+    
     Object.entries(scores).forEach(([key, value]) => {
-        if (value < 50) { // Lower threshold for "concerning" in a victory context
-            significantWeaknesses.push(scoreNames[key]);
+        if (value >= 80) {
+            excellentAreas.push(scoreNames[key]);
+        } else if (value >= 50) {
+            solidAreas.push(scoreNames[key]);
+        } else if (value >= 40) {
+            concerningAreas.push(scoreNames[key]);
+        } else {
+            criticalAreas.push(scoreNames[key]);
         }
     });
     
-    if (significantWeaknesses.length > 0) {
-        baseLegacy = `Your leadership has strengthened Civitas's democratic institutions overall, though voters remain concerned about ${formatList(significantWeaknesses)}. Your decisive victory gives you a strong mandate to address these remaining challenges.`;
+    let result, description, baseLegacy, resultColor, isVictory;
+    
+    if (totalScore >= 400) {
+        result = "OVERWHELMING VICTORY";
+        description = "You win re-election with 78% of the vote!";
+        baseLegacy = "You are hailed as one of the greatest democratic leaders in history. Civitas has become a model democracy that other nations study and emulate.";
+        resultColor = "#155724";
+        isVictory = true;
+    } else if (totalScore >= 350) {
+        result = "CLEAR VICTORY";
+        description = "You win re-election with 62% of the vote.";
+        
+        if (concerningAreas.length > 0 || criticalAreas.length > 0) {
+            const allConcerns = [...concerningAreas, ...criticalAreas];
+            baseLegacy = `Your leadership has strengthened Civitas's democratic institutions overall, though voters remain concerned about ${formatList(allConcerns)}. Your decisive victory gives you a strong mandate to address these remaining challenges in your second term.`;
+        } else {
+            baseLegacy = "Your leadership has strengthened Civitas's democratic institutions and the country is on a positive trajectory.";
+        }
+        
+        resultColor = "#155724";
+        isVictory = true;
+    } else if (totalScore >= 300) {
+        result = "NARROW VICTORY";
+        description = "You win re-election with 51% of the vote.";
+        baseLegacy = "A close election reflects a divided nation, but your victory demonstrates that voters still believe in your leadership to guide Civitas forward.";
+        resultColor = "#856404";
+        isVictory = true;
+    } else if (totalScore >= 250) {
+        result = "NARROW DEFEAT";
+        description = "You lose re-election with 47% of the vote.";
+        baseLegacy = "Despite the electoral loss, you leave office peacefully, demonstrating democratic norms. Your successor inherits significant challenges you were unable to resolve.";
+        resultColor = "#856404";
+        isVictory = false;
     } else {
-        baseLegacy = "Your leadership has strengthened Civitas's democratic institutions and the country is on a positive trajectory.";
+        result = "DECISIVE DEFEAT";
+        description = "You lose re-election with only 38% of the vote.";
+        baseLegacy = "Your time in office will be remembered as a period of missed opportunities and policy failures. However, the peaceful transition of power shows democracy's resilience.";
+        resultColor = "#721c24";
+        isVictory = false;
     }
     
-    resultColor = "#155724";
-}else if (totalScore >= 300) {
-                result = "NARROW VICTORY";
-                description = "You win re-election with 51% of the vote.";
-                baseLegacy = "A close election reflects a divided nation. Your second term will require building broader consensus and addressing unresolved challenges.";
-                resultColor = "#856404";
-            } else if (totalScore >= 250) {
-                result = "NARROW DEFEAT";
-                description = "You lose re-election with 47% of the vote.";
-                baseLegacy = "Despite the electoral loss, you leave office peacefully, demonstrating democratic norms. Your successor inherits significant challenges you were unable to resolve.";
-                resultColor = "#856404";
-            } else {
-                result = "DECISIVE DEFEAT";
-                description = "You lose re-election with only 38% of the vote.";
-                baseLegacy = "Your time in office will be remembered as a period of missed opportunities and policy failures. However, the peaceful transition of power shows democracy's resilience.";
-                resultColor = "#721c24";
-            }
-            let fullLegacy = baseLegacy;
-            if (strengths.length > 0 && weaknesses.length > 0) {
-    fullLegacy += ` While you excelled in ${formatList(strengths)}, significant challenges remain in ${formatList(weaknesses)}.`;
-} else if (weaknesses.length > 0) {
-    fullLegacy += ` However, your administration struggled with ${formatList(weaknesses)}, leaving these as priority areas for your successor.`;
-} else if (strengths.length > 0 && totalScore < 400) {
-    fullLegacy += ` Your particular strengths in ${formatList(strengths)} will be remembered as defining achievements of your tenure.`;
-}
-            if (scores.economy < 40 && scores.military < 40) {
-                fullLegacy += " The combination of economic instability and military concerns created a volatile security environment that dominated your final years in office.";
-            } else if (scores.economy < 40) {
-                fullLegacy += " Economic struggles became a defining challenge, with high unemployment and financial instability affecting daily life for citizens.";
-            } else if (scores.military < 40) {
-                fullLegacy += " Questions about military loyalty and national security created ongoing political tensions throughout your term.";
-            } else if (scores.trust < 40) {
-                fullLegacy += " The erosion of public trust fundamentally changed how citizens viewed government institutions.";
-            } else if (scores.institutions < 40) {
-                fullLegacy += " Weakened democratic institutions will require significant rebuilding efforts in the years ahead.";
-            } else if (scores.social < 40) {
-                fullLegacy += " Deep social divisions emerged that will take years of careful leadership to heal.";
-            }
-            const content = document.getElementById('scenario-content');
-            content.innerHTML = `
-                <div class="scenario routine-scenario">
-                    <h2 style="color: ${resultColor}; font-size: 2.5em; margin-bottom: 15px; text-align: center;">ELECTION RESULTS</h2>
-                    <h3 style="color: ${resultColor}; font-weight: bold; margin-bottom: 15px; text-align: center;">${result}</h3>
-                    <p style="margin-bottom: 20px; font-size: 1.2em; text-align: center;"><strong>${description}</strong></p>
-                    <p style="margin-bottom: 25px; font-size: 1.1em; text-align: center; line-height: 1.6; color: #2c3e50; font-style: italic; border-bottom: 2px solid ${resultColor}; padding-bottom: 15px;">Final Score: <strong>${totalScore}/500</strong></p>
-                    <h4 style="color: ${resultColor}; font-weight: bold; margin-bottom: 10px;">Your Legacy:</h4>
-                    <p style="margin-bottom: 25px;">${fullLegacy}</p>
-                    <h4 style="color: ${resultColor}; font-weight: bold; margin-bottom: 10px;">Key Lessons About Democracy:</h4>
-                    <p style="margin-bottom: 8px;"><strong>1. Balancing Competing Voices:</strong> Democracy requires leaders to navigate between different groups who all deserve to be heard, even when their demands conflict.</p>
-                    <p style="margin-bottom: 8px;"><strong>2. No Perfect Solutions:</strong> Democratic governance means choosing between imperfect options where someone will always be disappointed.</p>
-                    <p style="margin-bottom: 8px;"><strong>3. Representation vs. Effectiveness:</strong> Including everyone's voice can slow decision-making, but excluding voices undermines democratic legitimacy.</p>
-                    <p style="margin-bottom: 8px;"><strong>4. Long-term vs. Short-term Thinking:</strong> Democratic leaders must balance immediate public demands with long-term consequences that may not be popular.</p>
-                    <p style="margin-bottom: 8px;"><strong>5. The Price of Compromise:</strong> Democratic solutions often require everyone to give up something, making compromise both essential and politically costly.</p>
-                    <p style="margin-bottom: 20px;"><strong>6. Institutional Constraints:</strong> Democratic institutions both limit and protect leaders, creating stability but sometimes preventing quick action.</p>
-                    <h4 style="color: ${resultColor}; font-weight: bold; margin-bottom: 10px;">Reflection Questions:</h4>
-                    <p style="margin-bottom: 8px;">• When did you feel most torn between what different groups wanted?</p>
-                    <p style="margin-bottom: 8px;">• Which decisions forced you to disappoint supporters for the greater good?</p>
-                    <p style="margin-bottom: 8px;">• How did competing demands shape your leadership style?</p>
-                    <p style="margin-bottom: 8px;">• What does this reveal about why democratic governance is inherently difficult?</p>
-                    <p style="margin-bottom: 8px;">• How might different democratic systems change how leaders balance these pressures?</p>
-                    <p style="margin-bottom: 8px;">• When is it worth disappointing some groups to protect democratic principles?</p>
-                </div>
-                <p style="text-align: center; margin-top: 20px; font-size: 1.2em;"><strong>Thank you for playing! Democracy requires vigilance and difficult choices.</strong></p>
-            `;
-            document.getElementById('restart-btn').classList.remove('hidden');
+    let fullLegacy = baseLegacy;
+    
+    // Add specific excellent area achievements (80+)
+    if (scores.trust >= 80) {
+        fullLegacy += " Your exceptional leadership has earned unprecedented public confidence, with citizens placing remarkable faith in democratic governance.";
+    }
+    if (scores.economy >= 80) {
+        fullLegacy += " Under your stewardship, Civitas achieved remarkable economic prosperity with robust growth and widespread opportunity for all citizens.";
+    }
+    if (scores.social >= 80) {
+        fullLegacy += " You successfully fostered an era of social harmony, bringing together diverse communities in shared purpose and mutual respect.";
+    }
+    if (scores.institutions >= 80) {
+        fullLegacy += " Your administration strengthened democratic institutions beyond measure, creating a robust system that will serve Civitas for generations.";
+    }
+    if (scores.military >= 80) {
+        fullLegacy += " You cultivated unwavering military loyalty and professionalism, ensuring national security while maintaining democratic civilian control.";
+    }
+    
+    // Add solid area achievements (50-79)
+    const solidAreaAchievements = [];
+    if (scores.trust >= 50 && scores.trust < 80) {
+        solidAreaAchievements.push("maintained steady public confidence");
+    }
+    if (scores.economy >= 50 && scores.economy < 80) {
+        solidAreaAchievements.push("kept the economy stable and functioning");
+    }
+    if (scores.social >= 50 && scores.social < 80) {
+        solidAreaAchievements.push("preserved social cohesion during challenging times");
+    }
+    if (scores.institutions >= 50 && scores.institutions < 80) {
+        solidAreaAchievements.push("upheld democratic institutions effectively");
+    }
+    if (scores.military >= 50 && scores.military < 80) {
+        solidAreaAchievements.push("sustained military loyalty and readiness");
+    }
+    
+    if (solidAreaAchievements.length > 0) {
+        fullLegacy += ` Throughout your tenure, you ${formatList(solidAreaAchievements)}, providing crucial stability for the nation.`;
+    }
+    
+    // Handle concerning areas (40-49 range)
+    if (concerningAreas.length > 0) {
+        const areaText = concerningAreas.length === 1 ? "area" : "areas";
+        if (isVictory) {
+            fullLegacy += ` During your inauguration speech, you highlighted ${formatList(concerningAreas).toLowerCase()} as a key ${areaText} for improvement in your second term.`;
+        } else {
+            fullLegacy += ` The newly elected candidate has pledged to prioritize ${formatList(concerningAreas).toLowerCase()} as a central challenge requiring immediate attention.`;
         }
+    }
+    
+    // Add specific critical area sentences (below 40) - diplomatic but acknowledging severity
+    if (scores.economy < 40 && scores.military < 40) {
+        fullLegacy += " The combination of economic instability and military concerns created significant governance challenges that dominated your final years in office.";
+    } else if (scores.economy < 40) {
+        fullLegacy += " Economic difficulties became a defining challenge, with unemployment and financial pressures affecting many citizens throughout your term.";
+    } else if (scores.military < 40) {
+        fullLegacy += " Questions about military loyalty and national security created ongoing political tensions that required careful navigation.";
+    } else if (scores.trust < 40) {
+        fullLegacy += " The erosion of public trust fundamentally changed the relationship between government and citizens, requiring significant efforts to rebuild confidence.";
+    } else if (scores.institutions < 40) {
+        fullLegacy += " Weakened democratic institutions will require sustained attention and careful rebuilding in the years ahead.";
+    } else if (scores.social < 40) {
+        fullLegacy += " Deep social divisions emerged that will need thoughtful leadership and time to heal effectively.";
+    }
+    
+    // Add closing message based on election outcome
+    if (totalScore >= 350) { // Clear or Overwhelming Victory
+        fullLegacy += " With strong public support behind you, your next tenure looks promising.";
+    } else if (totalScore >= 300) { // Narrow Victory
+        fullLegacy += " Best of luck navigating the challenges ahead in your second term.";
+    } else if (totalScore >= 250) { // Narrow Defeat
+        if (criticalAreas.length > 0 || concerningAreas.length > 0) {
+            const allChallenges = [...concerningAreas, ...criticalAreas];
+            fullLegacy += ` Your successor will need to address these critical areas, particularly ${formatList(allChallenges).toLowerCase()}. You wish them the best of luck in tackling these important challenges.`;
+        } else {
+            fullLegacy += " You wish your successor the best of luck in their new role.";
+        }
+    } else { // Decisive Defeat
+        if (criticalAreas.length > 0 || concerningAreas.length > 0) {
+            const allChallenges = [...concerningAreas, ...criticalAreas];
+            fullLegacy += ` The incoming administration faces significant challenges in ${formatList(allChallenges).toLowerCase()} that will require immediate and sustained attention. You wish them the best of luck in implementing the necessary reforms.`;
+        } else {
+            fullLegacy += " You wish the incoming administration the best of luck in implementing their vision for Civitas.";
+        }
+    }
+    
+    const content = document.getElementById('scenario-content');
+    content.innerHTML = `
+        <div class="scenario routine-scenario">
+            <h2 style="color: ${resultColor}; font-size: 2.5em; margin-bottom: 15px; text-align: center;">ELECTION RESULTS</h2>
+            <h3 style="color: ${resultColor}; font-weight: bold; margin-bottom: 15px; text-align: center;">${result}</h3>
+            <p style="margin-bottom: 20px; font-size: 1.2em; text-align: center;"><strong>${description}</strong></p>
+            <p style="margin-bottom: 25px; font-size: 1.1em; text-align: center; line-height: 1.6; color: #2c3e50; font-style: italic; border-bottom: 2px solid ${resultColor}; padding-bottom: 15px;">Final Score: <strong>${totalScore}/500</strong></p>
+            <h4 style="color: ${resultColor}; font-weight: bold; margin-bottom: 10px;">Your Legacy:</h4>
+            <p style="margin-bottom: 25px;">${fullLegacy}</p>
+            <h4 style="color: ${resultColor}; font-weight: bold; margin-bottom: 10px;">Key Lessons About Democracy:</h4>
+            <p style="margin-bottom: 8px;"><strong>1. Balancing Competing Voices:</strong> Democracy requires leaders to navigate between different groups who all deserve to be heard, even when their demands conflict.</p>
+            <p style="margin-bottom: 8px;"><strong>2. No Perfect Solutions:</strong> Democratic governance means choosing between imperfect options where someone will always be disappointed.</p>
+            <p style="margin-bottom: 8px;"><strong>3. Representation vs. Effectiveness:</strong> Including everyone's voice can slow decision-making, but excluding voices undermines democratic legitimacy.</p>
+            <p style="margin-bottom: 8px;"><strong>4. Long-term vs. Short-term Thinking:</strong> Democratic leaders must balance immediate public demands with long-term consequences that may not be popular.</p>
+            <p style="margin-bottom: 8px;"><strong>5. The Price of Compromise:</strong> Democratic solutions often require everyone to give up something, making compromise both essential and politically costly.</p>
+            <p style="margin-bottom: 20px;"><strong>6. Institutional Constraints:</strong> Democratic institutions both limit and protect leaders, creating stability but sometimes preventing quick action.</p>
+            <h4 style="color: ${resultColor}; font-weight: bold; margin-bottom: 10px;">Reflection Questions:</h4>
+            <p style="margin-bottom: 8px;">• When did you feel most torn between what different groups wanted?</p>
+            <p style="margin-bottom: 8px;">• Which decisions forced you to disappoint supporters for the greater good?</p>
+            <p style="margin-bottom: 8px;">• How did competing demands shape your leadership style?</p>
+            <p style="margin-bottom: 8px;">• What does this reveal about why democratic governance is inherently difficult?</p>
+            <p style="margin-bottom: 8px;">• How might different democratic systems change how leaders balance these pressures?</p>
+            <p style="margin-bottom: 8px;">• When is it worth disappointing some groups to protect democratic principles?</p>
+        </div>
+        <p style="text-align: center; margin-top: 20px; font-size: 1.2em;"><strong>Thank you for playing! Democracy requires vigilance and difficult choices.</strong></p>
+    `;
+    document.getElementById('restart-btn').classList.remove('hidden');
+}
         function restartGame() {
             gameState = {
                 trust: 75,
