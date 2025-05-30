@@ -1198,15 +1198,13 @@ function showElectionResults() {
         fullLegacy += " Best of luck navigating the challenges ahead in your second term.";
     } else if (totalScore >= 250) { // Narrow Defeat
         if (criticalAreas.length > 0 || concerningAreas.length > 0) {
-            const allChallenges = [...concerningAreas, ...criticalAreas];
-            fullLegacy += ` Your successor will need to address these critical areas, particularly ${formatList(allChallenges).toLowerCase()}. You wish them the best of luck in tackling these important challenges.`;
+            fullLegacy += " You wish them the best of luck in tackling these important challenges.";
         } else {
             fullLegacy += " You wish your successor the best of luck in their new role.";
         }
     } else { // Decisive Defeat
         if (criticalAreas.length > 0 || concerningAreas.length > 0) {
-            const allChallenges = [...concerningAreas, ...criticalAreas];
-            fullLegacy += ` The incoming administration faces significant challenges in ${formatList(allChallenges).toLowerCase()} that will require immediate and sustained attention. You wish them the best of luck in implementing the necessary reforms.`;
+            fullLegacy += " You wish them the best of luck in implementing the necessary reforms.";
         } else {
             fullLegacy += " You wish the incoming administration the best of luck in implementing their vision for Civitas.";
         }
