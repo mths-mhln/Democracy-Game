@@ -405,11 +405,11 @@
                     <p style="margin-bottom: 20px"><strong>Tread carefully:</strong> History is littered with democracies that crumbled under the weight of poor decisions. Will you be remembered as the architect of a thriving republic, or as the leader who let freedom slip away? The choice—and the responsibility—are yours.</p>
                 </div>
                 <div class="mechanics-dropdown">
-                    <button class="mechanics-btn" onclick="toggleMechanics()">
+                    <button class="mechanics-btn" id="mechanicsBtn" onclick="toggleMechanics()">
                         How does the game work?
                     </button>
                     <div class="mechanics-content" id="mechanics-content">
-                        <h4>Game Mechanics:</h4>
+                        <h4>The Republic of Civitas: An Interactive Democracy Simulation</h4>
                         <p><strong>Your Role:</strong> You are Prime Minister governing for a 5-year term until the next elections.</p>
                         <p><strong>Decision Making:</strong> You'll face challenging scenarios where you must choose between different options. Each choice affects the five pillars of your democracy shown below.</p>
                         <p><strong>The Five Pillars:</strong> Your government's stability depends on maintaining balance across Public Trust, Economy, Social Cohesion, Institutions, and Military Loyalty. Each pillar is scored from 0-100.</p>
@@ -492,7 +492,7 @@
                 regionalTensionsHigh: false
             }
         };
-        
+
         const scenarios = [
             {
                 id: 0,
@@ -501,24 +501,24 @@
                 type: "routine",
                 year: 1,
                 advisorAvailable: true,
-                advisorText: "Electoral systems create deep structural trade-offs. First-past-the-post delivers clear governance but excludes minorities harshly - expect Economy gains (+8) and Institutions (+6) but severe Trust (-17) and Social (-20) damage as nearly half the population feels disenfranchised. Proportional representation includes all voices, boosting Trust (+10) and Social (+8), but creates governing chaos that devastates Economy (-14) and Institutions (-12). Mixed systems balance these with moderate impacts. Historical precedent shows my predictions are 70% accurate, but democratic transitions are volatile.",
+                advisorText: "Electoral systems create brutal structural trade-offs with no perfect solutions. First-past-the-post delivers decisive governance but excludes minorities catastrophically - expect Economy gains (+10) and Institutions (+8) but devastating Trust (-20) and Social (-25) damage as nearly half the population feels permanently disenfranchised. Proportional representation includes all voices, massively boosting Trust (+15) and Social (+12), but creates governing paralysis that crushes Economy (-18) and Institutions (-15). Mixed systems still involve painful compromises with significant downsides. Historical precedent shows my predictions are 70% accurate, but constitutional choices create unpredictable cascading effects.",
                 choices: [
                     {
                         text: "A) First-Past-The-Post system (winner takes all in each district)",
-                        consequences: "Clear majorities enable swift decision-making and attract business investment. However, 47% of voters feel permanently excluded, sparking angry protests in minority regions. Military reports growing unrest as disenfranchised groups organize resistance movements.",
-                        effects: { trust: -17, economy: +8, social: -20, institutions: +6, military: -6 },
+                        consequences: "Clear majorities enable swift decision-making and attract massive business investment. However, 47% of voters feel permanently excluded, sparking violent protests in minority regions. Military reports growing separatist movements as disenfranchised groups organize armed resistance.",
+                        effects: { trust: -20, economy: +10, social: -25, institutions: +8, military: -8 },
                         next: [1]
                     },
                     {
                         text: "B) Proportional Representation (seats allocated by vote percentage)",
-                        consequences: "Every significant viewpoint gains voice, creating unprecedented democratic legitimacy among all communities. However, coalition negotiations paralyze governance for months, investors flee uncertainty, and military grows nervous about governmental weakness during regional tensions.",
-                        effects: { trust: +10, economy: -14, social: +8, institutions: -12, military: -5 },
+                        consequences: "Every significant viewpoint gains voice, creating unprecedented democratic legitimacy among all communities. However, coalition negotiations paralyze governance for eight months, investors flee the chaos, and military grows deeply nervous about governmental weakness during rising regional tensions.",
+                        effects: { trust: +15, economy: -18, social: +12, institutions: -15, military: -8 },
                         next: [1]
                     },
                     {
                         text: "C) Mixed system combining both approaches",
-                        consequences: "A sophisticated compromise requiring extensive civic education. Initial confusion leads to 18% invalid ballots and delayed results, but gradual adaptation occurs. The complexity satisfies few completely while avoiding the extremes of other systems.",
-                        effects: { trust: -3, economy: -5, social: +2, institutions: +3, military: 0 },
+                        consequences: "A complex compromise requiring massive civic education campaigns. Initial confusion leads to 25% invalid ballots and three weeks of delayed results. The system satisfies very few while creating ongoing electoral complexity that frustrates voters and administrators alike.",
+                        effects: { trust: -8, economy: -8, social: -3, institutions: +5, military: -2 },
                         next: [1]
                     }
                 ]
@@ -530,24 +530,24 @@
                 type: "routine",
                 year: 1,
                 advisorAvailable: true,
-                advisorText: "Economic recovery requires painful sacrifices with uncertain returns. Infrastructure spending creates jobs (+12 Economy) but demands crushing tax increases that destroy public support (-14 Trust) and squeeze military budgets (-4 Military). Tax cuts stimulate growth (+10 Economy) and please voters (+6 Trust) but gut social programs (-14 Social) and weaken institutions (-7). Innovation investment provides balanced growth (+6 across most areas) but results take years while unemployment persists. Economic forecasting accuracy: 65%.",
+                advisorText: "Economic recovery demands brutal sacrifices with no guarantee of success. Infrastructure spending creates substantial jobs (+15 Economy) but requires crushing tax increases that destroy public support (-18 Trust) and devastate military budgets (-8 Military). Tax cuts stimulate growth (+12 Economy) and please voters (+8 Trust) but obliterate social programs (-18 Social) and gut institutions (-10). Innovation investment provides weaker immediate results (+4 Economy) while unemployment festers, though long-term gains may emerge. Economic forecasting accuracy: 60% due to global volatility.",
                 choices: [
                     {
                         text: "A) Launch massive infrastructure program creating 250,000 jobs",
-                        consequences: "Unemployment drops to 11% as massive construction projects begin. However, the 40% tax increase triggers middle-class flight abroad, small businesses close en masse, and military budget cuts force base closures, angering defense communities.",
-                        effects: { trust: -14, economy: +12, social: +8, institutions: +3, military: -4 },
+                        consequences: "Unemployment drops to 9% as massive construction projects begin. However, the 45% tax increase triggers middle-class exodus abroad, small businesses close en masse, and military budget cuts force base closures, creating defense communities that actively oppose your government.",
+                        effects: { trust: -18, economy: +15, social: +10, institutions: +4, military: -8 },
                         next: [2]
                     },
                     {
                         text: "B) Cut business taxes and reduce regulations to attract investment",
-                        consequences: "Foreign investment floods in and unemployment falls to 13%. Citizens enjoy lower taxes and economic optimism rises. However, environmental disasters multiply, healthcare costs soar as protections vanish, and inequality reaches historic highs.",
-                        effects: { trust: +6, economy: +10, social: -14, institutions: -7, military: 0 },
+                        consequences: "Foreign investment floods in and unemployment falls to 11%. Citizens enjoy significantly lower taxes and economic optimism rises. However, environmental disasters multiply, healthcare costs explode as protections vanish, and inequality reaches socially dangerous levels.",
+                        effects: { trust: +8, economy: +12, social: -18, institutions: -10, military: +2 },
                         next: [2]
                     },
                     {
                         text: "C) Invest heavily in education and technology innovation",
-                        consequences: "A patient strategy focusing on long-term competitiveness. Tech sectors show promise, universities attract international talent, and gradual improvements occur across multiple areas, though unemployment remains high during the slow transition.",
-                        effects: { trust: +2, economy: +6, social: +5, institutions: +6, military: +1 },
+                        consequences: "A patient strategy focusing on long-term competitiveness. Tech sectors show early promise and universities attract some international talent, but unemployment remains stubbornly high and citizens grow impatient with slow progress. Budget strain from dual education-technology investment creates fiscal pressure.",
+                        effects: { trust: -5, economy: +4, social: +2, institutions: +8, military: -2 },
                         next: [2]
                     }
                 ]
@@ -559,24 +559,24 @@
                 type: "routine",
                 year: 2,
                 advisorAvailable: true,
-                advisorText: "Press freedom creates fundamental tension between transparency and security. Strong media protections boost democratic Institutions (+12) and citizen Trust (+8) but can damage Military morale (-7) when sensitive operations are exposed and hurt Economy (-6) through negative coverage. Media restrictions please Military (+8) and may help Economy (+4) by controlling narratives, but devastate Institutions (-17) and Trust (-12) while isolating you internationally. Balanced approaches provide modest benefits. My accuracy on media issues: 60%.",
+                advisorText: "Press freedom creates fundamental tension with no middle ground that satisfies anyone. Strong media protections boost democratic Institutions (+15) and citizen Trust (+10) but severely damage Military morale (-12) when sensitive operations are exposed and hurt Economy (-8) through constant negative coverage that scares investors. Media restrictions please Military (+12) and may help Economy (+6) by controlling narratives, but devastate Institutions (-22) and Trust (-15) while isolating you internationally. Compromise approaches anger both sides while providing minimal benefits. Media politics accuracy: 55% due to unpredictable cascading effects.",
                 choices: [
                     {
                         text: "A) Strengthen press freedom laws and government transparency",
-                        consequences: "International democracy rankings soar and citizens praise your commitment to openness. However, constant investigative reports embarrass your administration, leaked military documents compromise operations, and investors worry about unpredictable policy revelations.",
-                        effects: { trust: +8, economy: -6, social: +4, institutions: +12, military: -7 },
+                        consequences: "International democracy rankings soar and citizens praise your commitment to openness. However, constant investigative reports severely embarrass your administration, leaked military documents compromise three ongoing operations, and investors begin avoiding Civitas due to unpredictable policy revelations.",
+                        effects: { trust: +10, economy: -8, social: +6, institutions: +15, military: -12 },
                         next: [3]
                     },
                     {
                         text: "B) Implement 'responsible journalism' guidelines with government oversight",
-                        consequences: "Security improves as sensitive information stays protected, and economic coverage becomes more favorable to your policies. However, press freedom organizations condemn the move, opposition claims authoritarianism, and citizens begin questioning what's being hidden.",
-                        effects: { trust: -12, economy: +4, social: -4, institutions: -17, military: +8 },
+                        consequences: "Security improves as sensitive information stays protected, and economic coverage becomes more favorable to your policies. However, press freedom organizations launch international campaigns against you, opposition parties unite in claiming authoritarianism, and citizens begin questioning what's being hidden from them.",
+                        effects: { trust: -15, economy: +6, social: -8, institutions: -22, military: +12 },
                         next: [3]
                     },
                     {
                         text: "C) Create voluntary press-government cooperation protocols",
-                        consequences: "A middle path establishing informal consultation between media and officials on sensitive stories. Some transparency preserved while avoiding major security breaches, though both journalists and military remain partially dissatisfied with compromises.",
-                        effects: { trust: +3, economy: -1, social: +2, institutions: +5, military: +2 },
+                        consequences: "A middle path establishing consultation between media and officials on sensitive stories. Some security preserved while maintaining partial transparency, but both journalists and military remain frustrated with the compromises. The voluntary nature means compliance is sporadic and conflicts persist.",
+                        effects: { trust: -2, economy: -3, social: -1, institutions: +3, military: +1 },
                         next: [3]
                     }
                 ]
@@ -588,24 +588,24 @@
                 type: "routine",
                 year: 3,
                 advisorAvailable: true,
-                advisorText: "Military demands create zero-sum budget battles. Full military funding delivers strong Military loyalty (+18) and may boost security-focused Institutions (+4), but requires devastating cuts to social programs (-17 Social) and economy-crushing tax increases (-14 Economy). Modest increases provide Military gains (+10) with manageable damage (-7 each area). Refusing military demands preserves civilian programs but risks Military loyalty collapse (-20) and potential intervention. Military coups occur when loyalty drops below 20.",
+                advisorText: "Military demands create zero-sum budget battles with no painless solutions. Full military funding delivers overwhelming Military loyalty (+22) and may boost security-focused Institutions (+6), but requires devastating cuts to social programs (-20 Social) and economy-crushing tax increases (-18 Economy). Modest increases provide significant Military gains (+12) but still inflict meaningful damage (-10 each area). Refusing military demands preserves civilian programs but risks catastrophic Military loyalty collapse (-25) and potential intervention. Military coups become likely when loyalty drops below 15.",
                 choices: [
                     {
                         text: "A) Grant full military budget increase with new tax levies",
-                        consequences: "Military modernizes rapidly with advanced equipment and expresses unwavering loyalty. However, the 35% tax increase triggers business exodus, social programs face 40% cuts causing widespread hardship, and citizens organize tax resistance movements.",
-                        effects: { trust: -12, economy: -14, social: -17, institutions: +4, military: +18 },
+                        consequences: "Military modernizes rapidly with advanced equipment and expresses unwavering loyalty. However, the 40% tax increase triggers business exodus, social programs face 50% cuts causing widespread hardship, and citizens organize massive tax resistance movements that require police intervention.",
+                        effects: { trust: -15, economy: -18, social: -20, institutions: +6, military: +22 },
                         next: [4]
                     },
                     {
                         text: "B) Provide modest 25% increase through budget reallocation",
-                        consequences: "A compromise that partially modernizes military capabilities while limiting civilian damage. Some equipment upgrades occur and military leaders remain supportive, though gaps in readiness persist and social programs face noticeable cuts.",
-                        effects: { trust: -7, economy: -7, social: -7, institutions: 0, military: +10 },
+                        consequences: "A painful compromise that partially modernizes military capabilities while inflicting significant civilian damage. Some equipment upgrades occur and military leaders remain supportive, though capability gaps persist and social programs face substantial cuts that anger affected populations.",
+                        effects: { trust: -10, economy: -10, social: -10, institutions: -2, military: +12 },
                         next: [4]
                     },
                     {
                         text: "C) Reject military demands and prioritize civilian programs",
-                        consequences: "Social programs expand and economic growth continues unimpeded. However, military leadership openly questions your commitment to national defense, senior officers brief opposition politicians about 'security gaps,' and recruitment plummets.",
-                        effects: { trust: +4, economy: +3, social: +6, institutions: -6, military: -20 },
+                        consequences: "Social programs expand and economic growth continues unimpeded. However, military leadership openly questions your commitment to national defense, senior officers begin briefing opposition politicians about 'critical security gaps,' and recruitment plummets as military morale collapses.",
+                        effects: { trust: +6, economy: +5, social: +8, institutions: -8, military: -25 },
                         next: [4]
                     }
                 ]
@@ -621,20 +621,20 @@
                 choices: [
                     {
                         text: "A) Launch independent investigation and cooperate fully with prosecutors",
-                        consequences: "Your transparency earns grudging respect, and institutional integrity is preserved. However, the investigation paralyzes your administration for months, several key allies face prosecution, and governing becomes nearly impossible as your political base crumbles.",
-                        effects: { trust: +2, economy: -10, social: -3, institutions: +15, military: +1 },
+                        consequences: "Your transparency earns grudging respect and institutional integrity is preserved. However, the investigation paralyzes your administration for eight months, several key allies face prosecution, and governing becomes nearly impossible as your political base crumbles and coalition partners abandon you.",
+                        effects: { trust: +4, economy: -15, social: -8, institutions: +18, military: +2 },
                         next: [5]
                     },
                     {
                         text: "B) Dismiss corrupt officials but resist external investigation",
-                        consequences: "You maintain some control over the narrative and governing capacity, but the scandal festers. Opposition and media maintain relentless pressure, while your selective transparency convinces many citizens you're hiding worse corruption.",
-                        effects: { trust: -14, economy: -6, social: -6, institutions: -4, military: -3 },
+                        consequences: "You maintain some control over the narrative and governing capacity, but the scandal metastasizes. Opposition and media maintain relentless pressure, while your selective transparency convinces many citizens you're hiding far worse corruption. International observers express concern.",
+                        effects: { trust: -18, economy: -10, social: -10, institutions: -8, military: -5 },
                         next: [5]
                     },
                     {
                         text: "C) Rally party loyalty and frame this as political persecution",
-                        consequences: "Your base rallies strongly, preserving your political coalition and enabling continued governance. However, institutional watchdogs declare open war on your administration, international observers express concern, and the scandal metastasizes.",
-                        effects: { trust: -20, economy: -1, social: -10, institutions: -14, military: +3 },
+                        consequences: "Your base rallies strongly, preserving your political coalition and enabling continued governance. However, institutional watchdogs declare open war on your administration, international observers express serious concern about democratic backsliding, and the scandal becomes a defining issue that polarizes the entire nation.",
+                        effects: { trust: -25, economy: -3, social: -15, institutions: -18, military: +5 },
                         next: [5]
                     }
                 ]
@@ -646,24 +646,24 @@
                 type: "routine",
                 year: 4,
                 advisorAvailable: true,
-                advisorText: "Border challenges expose tensions between security and humanitarian values. Military deployment boosts Military loyalty (+12) and may increase citizen Trust (+4) through security, but devastates Social cohesion (-14) through humanitarian costs and damages international Institutions (-9). Humanitarian approaches help Social (+6) and international standing (+5) but can crush Trust (-12) if citizens feel overwhelmed and anger Military (-12). Balanced approaches provide limited benefits while satisfying no one completely.",
+                advisorText: "Border challenges expose irreconcilable tensions between security and humanitarian values. Military deployment boosts Military loyalty (+15) and may increase citizen Trust (+6) through security theater, but devastates Social cohesion (-18) through humanitarian costs and damages international Institutions (-12). Humanitarian approaches help Social (+10) and international standing (+8) but can crush Trust (-15) if citizens feel overwhelmed and deeply anger Military (-15). Balanced approaches provide weak benefits while satisfying no constituency completely, creating ongoing political vulnerability.",
                 choices: [
                     {
                         text: "A) Deploy military for enhanced border security with rules of engagement",
-                        consequences: "Border security tightens dramatically and military loyalty strengthens through clear authority. However, several tragic incidents with refugee families trigger international condemnation, domestic protests, and deep social divisions over national values.",
-                        effects: { trust: +4, economy: -7, social: -14, institutions: -9, military: +12 },
+                        consequences: "Border security tightens dramatically and military loyalty strengthens through clear authority. However, several tragic incidents with refugee families trigger international sanctions, massive domestic protests, and deep social divisions over national values that persist for years.",
+                        effects: { trust: +6, economy: -10, social: -18, institutions: -12, military: +15 },
                         next: [6]
                     },
                     {
                         text: "B) Expand humanitarian processing while maintaining border controls",
-                        consequences: "A balanced approach that increases refugee processing capacity while preserving security measures. International praise follows, but border facilities remain overcrowded, costs spiral, and both security hawks and humanitarian advocates remain unsatisfied.",
-                        effects: { trust: -4, economy: -9, social: +3, institutions: +2, military: +1 },
+                        consequences: "A balanced approach that increases refugee processing capacity while preserving some security measures. International praise follows, but border facilities remain severely overcrowded, costs spiral dramatically, and both security hawks and humanitarian advocates actively oppose your compromise approach.",
+                        effects: { trust: -8, economy: -12, social: +2, institutions: +4, military: -3 },
                         next: [6]
                     },
                     {
                         text: "C) Open borders with expanded integration programs",
-                        consequences: "Humanitarian crisis resolves quickly with international acclaim. However, rapid demographic change overwhelms public services, triggers massive backlash from citizens fearing job competition, and military leaders privately question your judgment.",
-                        effects: { trust: -12, economy: -6, social: +6, institutions: +5, military: -12 },
+                        consequences: "Humanitarian crisis resolves quickly with massive international acclaim. However, rapid demographic change overwhelms public services, triggers sustained backlash from citizens fearing job competition, and military leaders privately express grave concerns about your judgment and national security priorities.",
+                        effects: { trust: -15, economy: -8, social: +10, institutions: +8, military: -15 },
                         next: [6]
                     }
                 ]
@@ -675,24 +675,24 @@
                 type: "routine",
                 year: 4,
                 advisorAvailable: true,
-                advisorText: "Education investments offer long-term returns but immediate political costs. Traditional funding massively boosts Social support (+14) and Trust (+10) through popular teacher backing, with strong Institution gains (+8), but devastates Economy (-14) through budget strain. Digital transformation helps Economy (+8) and Institutions (+10) through innovation leadership but creates Social devastation (-17) and Trust collapse (-14) from mass teacher unemployment. Hybrid approaches provide moderate benefits across areas.",
+                advisorText: "Education investments offer long-term returns but create immediate political devastation. Traditional funding massively boosts Social support (+18) and Trust (+12) through popular teacher backing, with strong Institution gains (+10), but devastates Economy (-18) through budget strain and forces military cuts (-6). Digital transformation helps Economy (+10) and Institutions (+12) through innovation leadership but creates Social devastation (-22) and Trust collapse (-18) from mass teacher unemployment and parent anxiety. There are no middle-ground solutions that avoid significant pain.",
                 choices: [
                     {
                         text: "A) Grant teacher pay raises and hire 20,000 new educators",
-                        consequences: "Teacher strikes end, class sizes shrink dramatically, and educational outcomes soar within two years. However, education now consumes 42% of the total budget, forcing severe cuts to infrastructure, healthcare, and economic development programs.",
-                        effects: { trust: +10, economy: -14, social: +14, institutions: +8, military: -4 },
+                        consequences: "Teacher strikes end, class sizes shrink dramatically, and educational outcomes soar within two years. However, education now consumes 48% of the total budget, forcing severe cuts to infrastructure, healthcare, and economic development programs while requiring tax increases that anger businesses.",
+                        effects: { trust: +12, economy: -18, social: +18, institutions: +10, military: -6 },
                         next: [7]
                     },
                     {
                         text: "B) Partner with tech companies for AI-powered personalized learning",
-                        consequences: "Civitas pioneers the world's first fully digital education system with remarkable learning improvements. However, 35,000 teachers lose jobs, triggering massive strikes, while many families struggle with the rapid technological transition and loss of human interaction.",
-                        effects: { trust: -14, economy: +8, social: -17, institutions: +10, military: 0 },
+                        consequences: "Civitas pioneers the world's first fully digital education system with remarkable learning improvements. However, 45,000 teachers lose jobs, triggering massive strikes and social unrest, while many families struggle with the rapid technological transition and loss of human educational interaction.",
+                        effects: { trust: -18, economy: +10, social: -22, institutions: +12, military: +2 },
                         next: [7]
                     },
                     {
                         text: "C) Implement gradual reforms with modest pay raises and pilot digital programs",
-                        consequences: "A measured approach that provides modest teacher raises while piloting technology in select schools. Progress is steady but slow, satisfying few completely while avoiding the disruption of radical change.",
-                        effects: { trust: +4, economy: +1, social: +5, institutions: +6, military: 0 },
+                        consequences: "A measured approach that provides insufficient teacher raises while piloting limited technology in select schools. Progress is frustratingly slow, teachers remain on strike periodically, parents see little improvement, and the technology pilots create inequality between pilot and non-pilot schools.",
+                        effects: { trust: -3, economy: -5, social: -2, institutions: +4, military: -1 },
                         next: [7]
                     }
                 ]
@@ -704,24 +704,24 @@
                 type: "crisis",
                 year: 5,
                 advisorAvailable: true,
-                advisorText: "Emergency powers represent democracy's ultimate test. Accepting broad powers might boost Military loyalty (+15) and citizen Trust (+8) through decisive action, but could devastate democratic Institutions (-20) and create dangerous precedents. Refusing powers preserves Institutions (+12) but frustrates Military (-12) and citizens expecting leadership (-9). Limited powers with oversight offer middle ground with moderate effects. Constitutional crisis predictions are only 45% accurate due to their unprecedented nature.",
+                advisorText: "Emergency powers represent democracy's ultimate test with no safe choices. Accepting broad powers might boost Military loyalty (+18) and citizen Trust (+10) through decisive action, but could catastrophically devastate democratic Institutions (-25) and create dangerous precedents that haunt future democracy. Refusing powers preserves Institutions (+15) but severely frustrates Military (-15) and citizens expecting leadership (-12). Limited powers with oversight offer weak middle ground that satisfies no one while creating ongoing constitutional tensions. Constitutional crisis predictions are only 40% accurate due to their unprecedented nature.",
                 choices: [
                     {
                         text: "A) Accept limited emergency powers with strict parliamentary oversight and sunset clauses",
-                        consequences: "Enhanced coordination dramatically improves disaster response and security operations. Strong legislative oversight prevents abuse and maintains democratic legitimacy, though some efficiency is lost to oversight requirements and political negotiations.",
-                        effects: { trust: +1, economy: 0, social: -2, institutions: +8, military: +8 },
+                        consequences: "Enhanced coordination improves disaster response and security operations. Strong legislative oversight prevents immediate abuse and maintains some democratic legitimacy, though efficiency is significantly lost to oversight requirements and the precedent creates ongoing pressure for expanded executive power.",
+                        effects: { trust: -2, economy: +2, social: -5, institutions: +10, military: +10 },
                         next: [8]
                     },
                     {
                         text: "B) Refuse emergency powers and work within existing constitutional framework",
-                        consequences: "A principled defense of democratic institutions that wins international praise and strengthens constitutional precedent. However, slower response times during crises frustrate citizens and military leaders, who question your resolve during national emergencies.",
-                        effects: { trust: -9, economy: -6, social: +2, institutions: +12, military: -12 },
+                        consequences: "A principled defense of democratic institutions that wins international praise and strengthens constitutional precedent. However, significantly slower response times during crises frustrate citizens and military leaders, who begin questioning your competence and resolve during national emergencies.",
+                        effects: { trust: -12, economy: -8, social: +4, institutions: +15, military: -15 },
                         next: [8]
                     },
                     {
                         text: "C) Accept broad emergency powers to ensure effective governance",
-                        consequences: "Swift, decisive action impresses military leaders and citizens who witness rapid crisis response. However, opposition parties unite in alarm, democratic watchdogs sound international alarms, and constitutional scholars warn of democratic erosion.",
-                        effects: { trust: +8, economy: +4, social: -4, institutions: -20, military: +15 },
+                        consequences: "Swift, decisive action impresses military leaders and citizens who witness rapid crisis response. However, opposition parties unite in constitutional alarm, democratic watchdogs sound international alarms, and constitutional scholars warn that democratic erosion has begun in earnest.",
+                        effects: { trust: +10, economy: +6, social: -8, institutions: -25, military: +18 },
                         next: [8]
                     }
                 ]
@@ -733,24 +733,24 @@
                 type: "routine",
                 year: 5,
                 advisorAvailable: true,
-                advisorText: "Healthcare choices create difficult resource allocation dilemmas. Technology leadership boosts Economy (+10) through medical industries and Institutions (+8) through international reputation, with moderate Social gains (+4), but requires crushing Trust sacrifice (-14) due to enormous costs and limited access. Universal coverage helps Social (+12) and Trust (+8) but devastates Economy (-12) through taxation. Current system improvements provide limited gains while avoiding major disruption.",
+                advisorText: "Healthcare choices create brutal resource allocation dilemmas with no win-win solutions. Technology leadership boosts Economy (+12) through medical industries and Institutions (+10) through international reputation, with moderate Social gains (+6), but requires crushing Trust sacrifice (-18) due to enormous costs and limited access that angers ordinary citizens. Universal coverage helps Social (+15) and Trust (+10) but devastates Economy (-15) through massive taxation. Current system improvements provide minimal gains while avoiding major change, but leave fundamental problems festering.",
                 choices: [
                     {
                         text: "A) Invest heavily in medical technology and research",
-                        consequences: "Civitas becomes a global medical innovation hub attracting pharmaceutical companies and research talent. Medical breakthroughs occur, but the enormous costs mean advanced treatments remain available only to the wealthy, creating a two-tier healthcare system.",
-                        effects: { trust: -14, economy: +10, social: +4, institutions: +8, military: +1 },
+                        consequences: "Civitas becomes a global medical innovation hub attracting pharmaceutical companies and research talent. Medical breakthroughs occur regularly, but the enormous costs mean advanced treatments remain available only to the wealthy, creating a stark two-tier healthcare system that generates sustained social resentment.",
+                        effects: { trust: -18, economy: +12, social: +6, institutions: +10, military: +2 },
                         next: [9]
                     },
                     {
                         text: "B) Implement comprehensive universal healthcare for all citizens",
-                        consequences: "Healthcare anxiety disappears as every citizen gains comprehensive coverage. Preventive care dramatically improves population health and productivity. However, the massive tax increases required trigger business flight and economic slowdown.",
-                        effects: { trust: +8, economy: -12, social: +12, institutions: +4, military: 0 },
+                        consequences: "Healthcare anxiety disappears as every citizen gains comprehensive coverage. Preventive care dramatically improves population health and productivity. However, the massive tax increases required trigger significant business flight and economic slowdown that affects employment and growth.",
+                        effects: { trust: +10, economy: -15, social: +15, institutions: +6, military: +1 },
                         next: [9]
                     },
                     {
                         text: "C) Improve current system with targeted reforms and price controls",
-                        consequences: "Modest improvements in access and affordability through regulatory changes and targeted subsidies. Healthcare becomes somewhat more accessible and affordable without major system disruption, though fundamental problems persist.",
-                        effects: { trust: +3, economy: 0, social: +4, institutions: +3, military: 0 },
+                        consequences: "Modest improvements in access and affordability through regulatory changes and targeted subsidies. Healthcare becomes somewhat more accessible without major system disruption, though fundamental problems persist and all stakeholders remain partially dissatisfied with incremental progress.",
+                        effects: { trust: +1, economy: -2, social: +2, institutions: +2, military: 0 },
                         next: [9]
                     }
                 ]
@@ -762,24 +762,24 @@
                 type: "routine",
                 year: 5,
                 advisorAvailable: true,
-                advisorText: "Participatory democracy experiments show volatile results. Full digital democracy massively boosts Trust (+16) and Social (+12) through unprecedented engagement but can devastate Economy (-12) and hurt Institutions (-9) through inefficient decision-making. Military typically views direct democracy as dangerously destabilizing (-14). Citizen assemblies provide strong gains across most areas (+8 to +10) while maintaining effectiveness. Limited participation offers safer, smaller benefits.",
+                advisorText: "Participatory democracy experiments show highly volatile results with major risks. Full digital democracy massively boosts Trust (+20) and Social (+15) through unprecedented engagement but can devastate Economy (-15) and hurt Institutions (-12) through chaotic decision-making. Military typically views direct democracy as dangerously destabilizing (-18). Citizen assemblies provide strong gains across most areas (+10 to +12) while maintaining some effectiveness, but require substantial resources. Limited participation offers safer but weaker benefits while leaving participation advocates unsatisfied.",
                 choices: [
                     {
                         text: "A) Implement comprehensive digital democracy and citizen assemblies",
-                        consequences: "Political engagement reaches historic highs as citizens directly shape policy through online platforms and deliberative assemblies. However, decision-making becomes chaotic, economic policy lurches unpredictably, and military leaders express deep concern about governance stability.",
-                        effects: { trust: +16, economy: -12, social: +12, institutions: -9, military: -14 },
+                        consequences: "Political engagement reaches historic highs as citizens directly shape policy through online platforms and deliberative assemblies. However, decision-making becomes chaotic, economic policy lurches unpredictably with market-damaging reversals, and military leaders express deep concern about governance stability and national security planning.",
+                        effects: { trust: +20, economy: -15, social: +15, institutions: -12, military: -18 },
                         next: [10]
                     },
                     {
                         text: "B) Create citizen assemblies for major policy decisions only",
-                        consequences: "Thoughtful citizen deliberation on key issues produces high-quality policy recommendations that enjoy broad legitimacy. Democratic satisfaction increases significantly, polarization decreases, and even military leaders respect the deliberative process quality.",
-                        effects: { trust: +10, economy: +3, social: +8, institutions: +12, military: +3 },
+                        consequences: "Thoughtful citizen deliberation on key issues produces high-quality policy recommendations that enjoy broad legitimacy. Democratic satisfaction increases significantly, polarization decreases meaningfully, and even military leaders respect the deliberative process quality, though implementation costs are substantial.",
+                        effects: { trust: +12, economy: +1, social: +10, institutions: +15, military: +4 },
                         next: [10]
                     },
                     {
                         text: "C) Expand consultation but maintain representative democracy",
-                        consequences: "Citizens feel more heard through expanded surveys, town halls, and advisory referendums. Democratic satisfaction improves modestly while maintaining governmental efficiency and military confidence in stable decision-making processes.",
-                        effects: { trust: +6, economy: +1, social: +4, institutions: +6, military: +2 },
+                        consequences: "Citizens feel somewhat more heard through expanded surveys, town halls, and advisory referendums. Democratic satisfaction improves modestly while maintaining governmental efficiency, though participation advocates remain largely unsatisfied and continue demanding more substantial democratic reforms.",
+                        effects: { trust: +4, economy: 0, social: +2, institutions: +4, military: +1 },
                         next: [10]
                     }
                 ]
@@ -791,24 +791,24 @@
                 type: "routine",
                 year: 5,
                 advisorAvailable: true,
-                advisorText: "Pre-election positioning determines both democratic legacy and succession prospects. Running a positive, unifying campaign typically boosts all categories moderately (+6 to +10 each) and improves electoral chances through broad appeal. Constitutional protections provide major Institution gains (+15) but risk Trust loss (-10) if seen as constraining future democracy. Building consensus creates solid gains across areas (+5 to +8) while broadening coalition support for the transition.",
+                advisorText: "Pre-election positioning determines both democratic legacy and succession prospects, with no risk-free approaches. Running a positive, unifying campaign typically boosts most categories moderately (+8 to +12 each) and improves electoral chances through broad appeal, but may be seen as weak by your base during a contentious period. Constitutional protections provide major Institution gains (+18) but risk severe Trust loss (-12) if seen as constraining future democracy and limiting voter choice. Building consensus creates solid gains but requires painful policy compromises.",
                 choices: [
                     {
                         text: "A) Run a positive campaign focused on democratic values and unity",
-                        consequences: "Your principled campaign elevates political discourse and demonstrates democratic leadership. Citizens respond positively to your focus on shared values rather than partisan attacks, while military leaders publicly praise your commitment to democratic transitions.",
-                        effects: { trust: +10, economy: +4, social: +6, institutions: +12, military: +4 },
+                        consequences: "Your principled campaign elevates political discourse and demonstrates democratic leadership. Citizens respond positively to your focus on shared values rather than partisan attacks, while military leaders publicly praise your commitment to democratic transitions, though some of your base feels you're not fighting hard enough.",
+                        effects: { trust: +12, economy: +6, social: +8, institutions: +15, military: +6 },
                         next: ["election"]
                     },
                     {
                         text: "B) Build cross-party consensus to protect key democratic reforms",
-                        consequences: "Through patient negotiation, you secure bipartisan support for essential democratic institutions that will survive electoral transitions. Some policies may change hands, but the democratic framework you've strengthened will endure regardless of electoral outcomes.",
-                        effects: { trust: +6, economy: +2, social: +5, institutions: +10, military: +2 },
+                        consequences: "Through extensive negotiation, you secure bipartisan support for essential democratic institutions that will survive electoral transitions. Some policies will change hands, but the democratic framework you've strengthened will endure regardless of electoral outcomes, though the compromise process requires sacrificing some key policy priorities.",
+                        effects: { trust: +8, economy: +4, social: +6, institutions: +12, military: +4 },
                         next: ["election"]
                     },
                     {
                         text: "C) Enshrine key policies in constitutional amendments before the election",
-                        consequences: "Bold constitutional changes protect your most important achievements from future reversal. However, the rushed process appears self-serving to many citizens, opponents condemn it as anti-democratic, and military leaders worry about constitutional stability.",
-                        effects: { trust: -10, economy: -7, social: 0, institutions: +15, military: -5 },
+                        consequences: "Bold constitutional changes protect your most important achievements from future reversal through permanent constitutional status. However, the rushed process appears deeply self-serving to many citizens, opponents condemn it as profoundly anti-democratic, and military leaders worry about constitutional stability and precedent.",
+                        effects: { trust: -12, economy: -10, social: -2, institutions: +18, military: -8 },
                         next: ["election"]
                     }
                 ]
@@ -1171,7 +1171,7 @@ function showElectionResults() {
     if (totalScore >= 400) {
         result = "OVERWHELMING VICTORY";
         description = "You win re-election with 78% of the vote!";
-        baseLegacy = "You are hailed as one of the greatest democratic leaders in history. Civitas has become a model democracy that other nations study and emulate.";
+        baseLegacy = "You are hailed as one of the most successful democratic leaders in recent history. Civitas has become a model democracy that other nations study and emulate.";
         resultColor = "#155724";
         isVictory = true;
     } else if (totalScore >= 350) {
@@ -1180,7 +1180,7 @@ function showElectionResults() {
         
         if (concerningAreas.length > 0 || criticalAreas.length > 0) {
             const allConcerns = [...concerningAreas, ...criticalAreas];
-            baseLegacy = `Your leadership has strengthened Civitas's democratic institutions overall, though voters remain concerned about ${formatList(allConcerns)}. Your decisive victory gives you a strong mandate to address these remaining challenges in your second term.`;
+            baseLegacy = `Your leadership has strengthened Civitas's democratic institutions overall, though significant challenges remain in ${formatList(allConcerns)}. Your decisive victory gives you a strong mandate to address these ongoing issues in your second term.`;
         } else {
             baseLegacy = "Your leadership has strengthened Civitas's democratic institutions and the country is on a positive trajectory.";
         }
@@ -1190,7 +1190,14 @@ function showElectionResults() {
     } else if (totalScore >= 300) {
         result = "NARROW VICTORY";
         description = "You win re-election with 51% of the vote.";
-        baseLegacy = "A close election reflects a divided nation, but your victory demonstrates that voters still believe in your leadership to guide Civitas forward.";
+        
+        // Fix logic issue - if trust is very low, acknowledge the contradiction
+        if (scores.trust < 40) {
+            baseLegacy = "Despite low public trust in government institutions, enough voters chose continuity over change. This narrow victory reflects deep ambivalence about your leadership and creates a challenging mandate for your second term.";
+        } else {
+            baseLegacy = "A close election reflects a divided nation, but your victory demonstrates that voters still believe in your leadership to guide Civitas forward.";
+        }
+        
         resultColor = "#856404";
         isVictory = true;
     } else if (totalScore >= 250) {
@@ -1220,10 +1227,10 @@ function showElectionResults() {
         fullLegacy += " You successfully fostered an era of social harmony, bringing together diverse communities in shared purpose and mutual respect.";
     }
     if (scores.institutions >= 80) {
-        fullLegacy += " Your administration strengthened democratic institutions beyond measure, creating a robust system that will serve Civitas for generations.";
+        fullLegacy += " Your administration strengthened democratic institutions significantly, creating a more robust system of governance.";
     }
     if (scores.military >= 80) {
-        fullLegacy += " You cultivated unwavering military loyalty and professionalism, ensuring national security while maintaining democratic civilian control.";
+        fullLegacy += " You cultivated strong military loyalty and professionalism, ensuring national security while maintaining democratic civilian control.";
     }
     
     // Add solid area achievements (50-79)
@@ -1248,34 +1255,82 @@ function showElectionResults() {
         fullLegacy += ` Throughout your tenure, you ${formatList(solidAreaAchievements)}, providing crucial stability for the nation.`;
     }
     
-    // Handle concerning areas (40-49 range)
+    // Handle concerning areas (40-49 range) - only mention in speech, don't repeat in critical areas section
     if (concerningAreas.length > 0) {
         const areaText = concerningAreas.length === 1 ? "area" : "areas";
         if (isVictory) {
-            fullLegacy += ` During your inauguration speech, you highlighted ${formatList(concerningAreas).toLowerCase()} as a key ${areaText} for improvement in your second term.`;
+            fullLegacy += ` During your inauguration speech, you acknowledged ${formatList(concerningAreas).toLowerCase()} as a key ${areaText} requiring focused attention in your second term.`;
         } else {
-            fullLegacy += ` The newly elected candidate has pledged to prioritize ${formatList(concerningAreas).toLowerCase()} as a central challenge requiring immediate attention.`;
+            // Create appropriate messaging for different areas when defeated
+            const defeatMessages = [];
+            if (concerningAreas.includes("Economy")) {
+                defeatMessages.push("economic recovery");
+            }
+            if (concerningAreas.includes("Social Cohesion")) {
+                defeatMessages.push("healing social divisions");
+            }
+            if (concerningAreas.includes("Military Loyalty")) {
+                defeatMessages.push("strengthening national security and defense capabilities");
+            }
+            if (concerningAreas.includes("Public Trust")) {
+                defeatMessages.push("rebuilding public confidence in government");
+            }
+            if (concerningAreas.includes("Institutions")) {
+                defeatMessages.push("strengthening democratic institutions");
+            }
+            
+            fullLegacy += ` The newly elected candidate has pledged to prioritize ${formatList(defeatMessages)} as central challenges requiring immediate attention.`;
         }
     }
     
-    // Add specific critical area sentences (below 40) - diplomatic but acknowledging severity
-    if (scores.economy < 40 && scores.military < 40) {
-        fullLegacy += " The combination of economic instability and military concerns created significant governance challenges that dominated your final years in office.";
-    } else if (scores.economy < 40) {
-        fullLegacy += " Economic difficulties became a defining challenge, with unemployment and financial pressures affecting many citizens throughout your term.";
-    } else if (scores.military < 40) {
-        fullLegacy += " Questions about military loyalty and national security created ongoing political tensions that required careful navigation.";
-    } else if (scores.trust < 40) {
-        fullLegacy += " The erosion of public trust fundamentally changed the relationship between government and citizens, requiring significant efforts to rebuild confidence.";
-    } else if (scores.institutions < 40) {
-        fullLegacy += " Weakened democratic institutions will require sustained attention and careful rebuilding in the years ahead.";
-    } else if (scores.social < 40) {
-        fullLegacy += " Deep social divisions emerged that will need thoughtful leadership and time to heal effectively.";
+    // Add specific critical area sentences (below 40) - only for areas not already mentioned in concerning areas
+    const economyCritical = scores.economy < 40;
+    const militaryCritical = scores.military < 40;
+    const trustCritical = scores.trust < 40;
+    const institutionsCritical = scores.institutions < 40;
+    const socialCritical = scores.social < 40;
+    
+    if (economyCritical && militaryCritical) {
+        if (isVictory) {
+            fullLegacy += " The combination of economic instability and military concerns will require your immediate attention as ongoing governance challenges in your second term.";
+        } else {
+            fullLegacy += " The combination of economic instability and defense concerns dominated your final years in office and remain significant challenges for your successor.";
+        }
+    } else if (economyCritical && !concerningAreas.includes("Economy")) {
+        if (isVictory) {
+            fullLegacy += " Economic difficulties remain a defining challenge, with unemployment and financial pressures continuing to affect many citizens.";
+        } else {
+            fullLegacy += " Economic difficulties became a defining challenge, with unemployment and financial pressures affecting many citizens throughout your term.";
+        }
+    } else if (militaryCritical && !concerningAreas.includes("Military Loyalty")) {
+        if (isVictory) {
+            fullLegacy += " Questions about military loyalty and national security continue to create political tensions that will require careful navigation in your second term.";
+        } else {
+            fullLegacy += " Questions about military loyalty and national security created ongoing political tensions throughout your administration.";
+        }
+    } else if (trustCritical && !concerningAreas.includes("Public Trust")) {
+        if (isVictory) {
+            fullLegacy += " The erosion of public trust continues to challenge the relationship between government and citizens, requiring sustained efforts to rebuild confidence.";
+        } else {
+            fullLegacy += " The erosion of public trust fundamentally changed the relationship between government and citizens during your tenure.";
+        }
+    } else if (institutionsCritical && !concerningAreas.includes("Institutions")) {
+        if (isVictory) {
+            fullLegacy += " Weakened democratic institutions will require sustained attention and careful rebuilding efforts in your second term.";
+        } else {
+            fullLegacy += " Weakened democratic institutions will require sustained attention and careful rebuilding in the years ahead.";
+        }
+    } else if (socialCritical && !concerningAreas.includes("Social Cohesion")) {
+        if (isVictory) {
+            fullLegacy += " Deep social divisions persist and will need thoughtful leadership and dedicated effort to heal effectively.";
+        } else {
+            fullLegacy += " Deep social divisions emerged that will need thoughtful leadership and time to heal effectively.";
+        }
     }
     
     // Add closing message based on election outcome
     if (totalScore >= 350) { // Clear or Overwhelming Victory
-        fullLegacy += " With strong public support behind you, your next tenure looks promising.";
+        fullLegacy += " With strong public support behind you, your second term offers significant opportunities for progress.";
     } else if (totalScore >= 300) { // Narrow Victory
         fullLegacy += " Best of luck navigating the challenges ahead in your second term.";
     } else if (totalScore >= 250) { // Narrow Defeat
@@ -1319,8 +1374,7 @@ function showElectionResults() {
         <p style="text-align: center; margin-top: 20px; font-size: 1.2em;"><strong>Thank you for playing! Democracy requires vigilance and difficult choices.</strong></p>
     `;
     document.getElementById('restart-btn').classList.remove('hidden');
-}
-        function restartGame() {
+}        function restartGame() {
             gameState = {
                 trust: 75,
                 economy: 70,
