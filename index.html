@@ -327,6 +327,67 @@
             border-left: 4px solid #28a745;
             background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
         }
+        .mechanics-dropdown {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .mechanics-btn {
+            background: linear-gradient(135deg, #8e9aaf 0%, #6c7b95 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 32px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+            box-shadow: 0 4px 15px rgba(142, 154, 175, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-weight: 500;
+        }
+        .mechanics-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(142, 154, 175, 0.35);
+            background: linear-gradient(135deg, #9aa5b8 0%, #7a8aa3 100%);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .mechanics-content {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 0;
+            margin: 15px 0;
+            text-align: left;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.5s ease-in-out;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        .mechanics-content.expanded {
+            max-height: 1500px;
+            opacity: 1;
+            padding: 25px;
+        }
+        .mechanics-content h4 {
+            color: #2c3e50;
+            margin-bottom: 18px;
+            text-align: center;
+            font-size: 1.2em;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+            padding-bottom: 10px;
+        }
+        .mechanics-content p {
+            margin-bottom: 14px;
+            line-height: 1.6;
+            color: #34495e;
+            font-size: 15px;
+        }
+        .mechanics-content p strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -342,6 +403,21 @@
                     <p style="margin-bottom: 20px">But democracy is not a destination—it's a daily choice. Around you, the forces of history watch and wait. Military generals who remember the "efficiency" of the old regime. Economic elites worried about their privileges. Social movements demanding immediate change. Foreign powers with their own agendas. The international community, hopeful yet skeptical.</p>
                     <p style="margin-bottom: 20px">Your every decision can send ripples through five critical pillars of democratic governance: <strong>Public Trust</strong> in your leadership, <strong>Economic Prosperity</strong> that legitimizes the system, <strong>Social Cohesion</strong> that binds citizens together, <strong>Institutional Strength</strong> that outlasts any single leader, and <strong>Military Loyalty</strong> to civilian authority.</p>
                     <p style="margin-bottom: 20px"><strong>Tread carefully:</strong> History is littered with democracies that crumbled under the weight of poor decisions. Will you be remembered as the architect of a thriving republic, or as the leader who let freedom slip away? The choice—and the responsibility—are yours.</p>
+                </div>
+                <div class="mechanics-dropdown">
+                    <button class="mechanics-btn" onclick="toggleMechanics()">
+                        How does the game work?
+                    </button>
+                    <div class="mechanics-content" id="mechanics-content">
+                        <h4>Game Mechanics:</h4>
+                        <p><strong>Your Role:</strong> You are Prime Minister governing for a 5-year term until the next elections.</p>
+                        <p><strong>Decision Making:</strong> You'll face challenging scenarios where you must choose between different options. Each choice affects the five pillars of your democracy shown below.</p>
+                        <p><strong>The Five Pillars:</strong> Your government's stability depends on maintaining balance across Public Trust, Economy, Social Cohesion, Institutions, and Military Loyalty. Each pillar is scored from 0-100.</p>
+                        <p><strong>Political Advisor:</strong> You have 3 advisor consultations for your entire term. Your advisor can estimate the likely impact of different choices on your pillars, but the exact amounts remain uncertain.</p>
+                        <p><strong>Critical Threshold:</strong> If any pillar drops below 15, your democracy faces immediate collapse with different dramatic consequences.</p>
+                        <p><strong>Elections:</strong> Your final score across all five pillars determines your electoral fate and lasting legacy.</p>
+                        <p><strong>No Perfect Choices:</strong> Helping one group often requires disappointing another. Democracy is about managing competing demands with limited resources.</p>
+                    </div>
                 </div>
                 <div class="stats" id="stats">
                     <div class="stat-item">
@@ -416,6 +492,7 @@
                 regionalTensionsHigh: false
             }
         };
+        
         const scenarios = [
             {
                 id: 0,
@@ -854,6 +931,11 @@ militaryAdministration: {
                 legacy: "You are remembered as the civilian leader who lost control of the military, ending centuries of democratic tradition not through crisis or revolution, but through gradual surrender of civilian authority to military 'expertise.'"
             }
         };
+
+	function toggleMechanics() {
+            const content = document.getElementById('mechanics-content');
+            content.classList.toggle('expanded');
+        }
         function startGame() {
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
