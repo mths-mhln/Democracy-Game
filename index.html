@@ -331,7 +331,7 @@
             margin: 20px 0;
             text-align: center;
         }
-        .mechanics-btn {
+          .mechanics-btn {
             background: linear-gradient(135deg, #8e9aaf 0%, #6c7b95 100%);
             color: white;
             border: none;
@@ -344,6 +344,7 @@
             box-shadow: 0 4px 15px rgba(142, 154, 175, 0.25);
             border: 1px solid rgba(255, 255, 255, 0.15);
             font-weight: 500;
+            width: 260px;
         }
         .mechanics-btn:hover {
             transform: translateY(-2px);
@@ -932,10 +933,23 @@ militaryAdministration: {
             }
         };
 
-	function toggleMechanics() {
+       let mechanicsExpanded = false;
+
+        function toggleMechanics() {
             const content = document.getElementById('mechanics-content');
+            const btn = document.getElementById('mechanicsBtn');
+            
+            mechanicsExpanded = !mechanicsExpanded;
             content.classList.toggle('expanded');
+            
+            // Update button text based on state
+            if (mechanicsExpanded) {
+                btn.textContent = 'Hide Description';
+            } else {
+                btn.textContent = 'How does the game work?';
+            }
         }
+
         function startGame() {
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
